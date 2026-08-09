@@ -1,8 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { createSecureStoreStorage } from '../storage';
 
-jest.mock('expo-secure-store');
-
 const mockSecureStore = SecureStore as jest.Mocked<typeof SecureStore>;
 
 /**

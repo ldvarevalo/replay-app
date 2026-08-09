@@ -19,7 +19,8 @@
     "update:preview": "eas update --channel preview --platform android"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"]
   },
   "dependencies": {
     "@expo-google-fonts/inter": "0.4.2",
