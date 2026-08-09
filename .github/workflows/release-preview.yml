@@ -1,11 +1,89 @@
-name: Build Android Preview
+name: Release Preview
 
 on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '.github/workflows/**'
+      - 'tests/**'
+      - '__tests__/**'
+      - '.claude/**'
   workflow_dispatch:
+    inputs:
+      target:
+        description: Release target
+        required: true
+        type: choice
+        default: native
+        options:
+          - native
+          - ota
+          - both
 
 jobs:
-  build:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Typecheck
+        run: yarn typecheck
+
+  ota:
+    name: Publish OTA
+    needs: validate
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' &&
+       (inputs.target == 'ota' || inputs.target == 'both'))
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Publish preview update
+        run: >
+          yarn update:preview
+          --environment preview
+          --message "${{ github.event.head_commit.message }}"
+          --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+  native-build:
     name: Build and distribute
+    needs: validate
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.target == 'native' || inputs.target == 'both')
     runs-on: ubuntu-latest
 
     steps:
