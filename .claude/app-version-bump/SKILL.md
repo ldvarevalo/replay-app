@@ -1,8 +1,8 @@
 ---
 
 name: app-version-bump
-description: Decidir si corresponde hacer bump de versión (NONE/PATCH/MINOR/MAJOR) sobre `expo.version` en `app.json` para una app React Native + Expo, analizando el diff entre la branch actual y su branch base. También clasifica si los cambios parecen tener impacto nativo para informar el proceso de release. Usá esta skill cada vez que el usuario mencione versionado, bump de versión, corte de release, prepare-release, antes de mergear a master, pregunte "qué versión le pongo", o pida revisar cambios para release. No la uses para modificar Android versionCode ni runtimeVersion: EAS los administra automáticamente.
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+description: "Decidir si corresponde hacer bump de versión (NONE/PATCH/MINOR/MAJOR) sobre `expo.version` en `app.json` para una app React Native + Expo, analizando el diff entre la branch actual y su branch base. También clasifica si los cambios parecen tener impacto nativo para informar el proceso de release. Usá esta skill cada vez que el usuario mencione versionado, bump de versión, corte de release, prepare-release, antes de mergear a master, pregunte 'qué versión le pongo', o pida revisar cambios para release. No la uses para modificar Android versionCode ni runtimeVersion: EAS los administra automáticamente."
+---
 
 # app-version-bump
 
