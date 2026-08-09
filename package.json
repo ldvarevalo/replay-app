@@ -18,6 +18,9 @@
     "build:android:production": "eas build --platform android --profile production",
     "update:preview": "eas update --channel preview --platform android"
   },
+  "jest": {
+    "preset": "jest-expo"
+  },
   "dependencies": {
     "@expo-google-fonts/inter": "0.4.2",
     "@expo-google-fonts/newsreader": "0.4.1",
@@ -52,6 +55,7 @@
     "react-native-worklets": "0.10.0"
   },
   "devDependencies": {
+    "@react-native/jest-preset": "^0.86.2",
     "@testing-library/jest-native": "5.4.3",
     "@testing-library/react-native": "14.0.1",
     "@types/jest": "30.0.0",
