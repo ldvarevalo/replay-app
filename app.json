@@ -48,6 +48,13 @@
       "eas": {
         "projectId": "dd2ed1c6-1a21-4b51-842e-393bdb37262d"
       }
+    },
+    "owner": "arevalolucianadg",
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/dd2ed1c6-1a21-4b51-842e-393bdb37262d"
     }
   }
 }
