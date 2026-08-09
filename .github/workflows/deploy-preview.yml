@@ -32,6 +32,7 @@ jobs:
       - name: Publish preview update
         run: >
           yarn update:preview
+          --environment preview
           --message "${{ github.event.head_commit.message }}"
           --non-interactive
         env:

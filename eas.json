@@ -1,8 +1,8 @@
 {
+  "cli": {
+    "appVersionSource": "remote"
+  },
   "build": {
-    "cli": {
-      "appVersionSource": "remote"
-    },
     "development": {
       "developmentClient": true,
       "distribution": "internal",
