@@ -20,12 +20,15 @@
   },
   "jest": {
     "preset": "jest-expo",
-    "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ]
   },
   "dependencies": {
     "@expo-google-fonts/inter": "0.4.2",
     "@expo-google-fonts/newsreader": "0.4.1",
     "@expo/ui": "~57.0.4",
+    "@react-navigation/native": "7.3.16",
     "@supabase/supabase-js": "2.107.0",
     "@tanstack/react-query": "^5.101.4",
     "expo": "~57.0.4",
