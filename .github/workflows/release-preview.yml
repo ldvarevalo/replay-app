@@ -1,0 +1,152 @@
+name: Release Preview
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '.github/workflows/**'
+      - 'tests/**'
+      - '__tests__/**'
+      - '.claude/**'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Release target
+        required: true
+        type: choice
+        default: native
+        options:
+          - native
+          - ota
+          - both
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Typecheck
+        run: yarn typecheck
+
+  ota:
+    name: Publish OTA
+    needs: validate
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' &&
+       (inputs.target == 'ota' || inputs.target == 'both'))
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Publish preview update
+        run: >
+          yarn update:preview
+          --environment preview
+          --message "${{ github.event.head_commit.message }}"
+          --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+  native-build:
+    name: Build and distribute
+    needs: validate
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.target == 'native' || inputs.target == 'both')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Build Android preview
+        id: eas-build
+        run: |
+          yarn eas build \
+            --platform android \
+            --profile preview \
+            --non-interactive \
+            --wait \
+            --json > eas-build.json
+
+          BUILD_ID=$(node -e "
+            const data = require('./eas-build.json');
+            const build = Array.isArray(data) ? data[0] : data;
+            console.log(build.id);
+          ")
+
+          echo "build_id=$BUILD_ID" >> "$GITHUB_OUTPUT"
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Download APK
+        run: |
+          yarn eas build:download \
+            --build-id "${{ steps.eas-build.outputs.build_id }}" \
+            --path ./replay-preview.apk \
+            --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Create Firebase credentials
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > firebase-service-account.json
+
+      - name: Distribute to Firebase
+        run: |
+          yarn firebase appdistribution:distribute ./replay-preview.apk \
+            --app "${{ secrets.FIREBASE_APP_ID }}" \
+            --groups "mvp-testers" \
+            --release-notes "Build ${GITHUB_SHA::7}"
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/firebase-service-account.json
+
+      - name: Cleanup Firebase credentials
+        if: always()
+        run: rm -f firebase-service-account.json
