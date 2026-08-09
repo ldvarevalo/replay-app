@@ -9,10 +9,11 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
+    "typecheck": "tsc --noEmit",
     "build:android:dev": "eas build --platform android --profile development",
     "build:android:preview": "eas build --platform android --profile preview",
     "build:android:production": "eas build --platform android --profile production",
-    "update:preview": "eas update --channel preview"
+    "update:preview": "eas update --channel preview --platform android"
   },
   "dependencies": {
     "@expo/ui": "~57.0.4",
@@ -44,6 +45,8 @@
   "devDependencies": {
     "@types/react": "~19.2.2",
     "eas-cli": "21.7.0",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~57.0.1",
     "typescript": "~6.0.3"
   },
   "private": true,
