@@ -15,18 +15,14 @@ const mapTrack = (row: Record<string, unknown>): Track => ({
 });
 
 /**
- * SupabaseTracksRepository
+ * createSupabaseTracksRepository
  */
 
-export class SupabaseTracksRepository implements TracksRepository {
-  private supabase: SupabaseClient;
-
-  constructor(supabase: SupabaseClient) {
-    this.supabase = supabase;
-  }
-
+export const createSupabaseTracksRepository = (
+  supabase: SupabaseClient
+): TracksRepository => ({
   async findRecentByUser(userId: string, limit: number): Promise<Track[]> {
-    const { data: userReleases, error: urError } = await this.supabase
+    const { data: userReleases, error: urError } = await supabase
       .from('user_releases')
       .select('release_id')
       .eq('user_id', userId)
@@ -47,7 +43,7 @@ export class SupabaseTracksRepository implements TracksRepository {
       return [];
     }
 
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('tracks')
       .select(
         `
@@ -68,10 +64,10 @@ export class SupabaseTracksRepository implements TracksRepository {
     return (data ?? []).map((row: unknown) =>
       mapTrack(row as Record<string, unknown>)
     );
-  }
+  },
 
   async createMany(releaseId: string, tracks: TrackInput[]): Promise<void> {
-    const { error } = await this.supabase.from('tracks').insert(
+    const { error } = await supabase.from('tracks').insert(
       tracks.map(t => ({
         release_id: releaseId,
         title: t.title,
@@ -84,10 +80,10 @@ export class SupabaseTracksRepository implements TracksRepository {
     if (error) {
       throw error;
     }
-  }
+  },
 
   async findByRelease(releaseId: string): Promise<Track[]> {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('tracks')
       .select('id, title, duration_seconds, side, position')
       .eq('release_id', releaseId)
@@ -98,5 +94,5 @@ export class SupabaseTracksRepository implements TracksRepository {
     }
 
     return (data ?? []).map(row => mapTrack(row as Record<string, unknown>));
-  }
-}
+  },
+});

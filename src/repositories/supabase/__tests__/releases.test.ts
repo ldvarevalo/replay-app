@@ -1,4 +1,4 @@
-import { SupabaseReleasesRepository } from '../releases';
+import { createSupabaseReleasesRepository } from '../releases';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 /**
@@ -38,7 +38,7 @@ describe('SupabaseReleasesRepository.findByTitleAndArtist', () => {
     (supabase.from as jest.Mock).mockReturnValue({
       select: jest.fn().mockReturnValue(selectChain),
     });
-    const repo = new SupabaseReleasesRepository(supabase);
+    const repo = createSupabaseReleasesRepository(supabase);
     const id = await repo.findByTitleAndArtist(
       'A.RELEASE.TITLE',
       'A.ARTIST.NAME'
@@ -56,7 +56,7 @@ describe('SupabaseReleasesRepository.findByTitleAndArtist', () => {
     (supabase.from as jest.Mock).mockReturnValue({
       select: jest.fn().mockReturnValue(selectChain),
     });
-    const repo = new SupabaseReleasesRepository(supabase);
+    const repo = createSupabaseReleasesRepository(supabase);
     const id = await repo.findByTitleAndArtist(
       'NONEXISTENT.TITLE',
       'NOBODY.NAME'
@@ -77,7 +77,7 @@ describe('SupabaseReleasesRepository.findByTitleAndArtist', () => {
     (supabase.from as jest.Mock).mockReturnValue({
       select: jest.fn().mockReturnValue(selectChain),
     });
-    const repo = new SupabaseReleasesRepository(supabase);
+    const repo = createSupabaseReleasesRepository(supabase);
     await expect(
       repo.findByTitleAndArtist('A.RELEASE.TITLE', 'A.ARTIST.NAME')
     ).rejects.toEqual({ message: 'A.DB.ERROR' });

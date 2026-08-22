@@ -90,16 +90,12 @@ const mapAlbumDetailRow = (row: Record<string, unknown>): AlbumDetail => {
 };
 
 /**
- * SupabaseReleasesRepository
+ * createSupabaseReleasesRepository
  */
 
-export class SupabaseReleasesRepository implements ReleasesRepository {
-  private supabase: SupabaseClient;
-
-  constructor(supabase: SupabaseClient) {
-    this.supabase = supabase;
-  }
-
+export const createSupabaseReleasesRepository = (
+  supabase: SupabaseClient
+): ReleasesRepository => ({
   async findByQuery(
     query: string,
     page: number,
@@ -110,7 +106,7 @@ export class SupabaseReleasesRepository implements ReleasesRepository {
     const escapedQuery = query.replaceAll('%', '\\%').replaceAll('_', '\\_');
     const pattern = `%${escapedQuery}%`;
 
-    const { data, error, count } = await this.supabase
+    const { data, error, count } = await supabase
       .from('releases_search')
       .select('id, title, cover_url, release_year, primary_artist_name', {
         count: 'exact',
@@ -139,13 +135,13 @@ export class SupabaseReleasesRepository implements ReleasesRepository {
       results,
       totalPages: count ? Math.ceil(count / pageSize) : 1,
     };
-  }
+  },
 
   async findByTitleAndArtist(
     title: string,
     artist: string
   ): Promise<string | null> {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('releases_search')
       .select('id')
       .ilike('title', title.trim())
@@ -157,14 +153,14 @@ export class SupabaseReleasesRepository implements ReleasesRepository {
     }
 
     return data?.id ?? null;
-  }
+  },
 
   async create(data: {
     title: string;
     coverUrl?: string;
     releaseYear?: string;
   }): Promise<string> {
-    const { data: result, error } = await this.supabase
+    const { data: result, error } = await supabase
       .from('releases')
       .insert({
         title: data.title,
@@ -179,14 +175,14 @@ export class SupabaseReleasesRepository implements ReleasesRepository {
     }
 
     return result.id;
-  }
+  },
 
   async linkArtist(
     releaseId: string,
     artistId: string,
     role: ArtistRole = 'primary'
   ): Promise<void> {
-    const { error } = await this.supabase.from('release_artists').insert({
+    const { error } = await supabase.from('release_artists').insert({
       release_id: releaseId,
       artist_id: artistId,
       role,
@@ -195,10 +191,10 @@ export class SupabaseReleasesRepository implements ReleasesRepository {
     if (error) {
       throw error;
     }
-  }
+  },
 
   async linkGenre(releaseId: string, genreId: string): Promise<void> {
-    const { error } = await this.supabase.from('release_genres').insert({
+    const { error } = await supabase.from('release_genres').insert({
       release_id: releaseId,
       genre_id: genreId,
     });
@@ -206,10 +202,10 @@ export class SupabaseReleasesRepository implements ReleasesRepository {
     if (error) {
       throw error;
     }
-  }
+  },
 
   async findById(id: string, userId?: string): Promise<AlbumDetail> {
-    let query = this.supabase
+    let query = supabase
       .from('releases')
       .select(
         `
@@ -257,5 +253,5 @@ export class SupabaseReleasesRepository implements ReleasesRepository {
     }
 
     return mapAlbumDetailRow(data as Record<string, unknown>);
-  }
-}
+  },
+});

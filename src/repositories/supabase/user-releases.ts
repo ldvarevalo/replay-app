@@ -131,21 +131,17 @@ const mapToAlbumWithListenedAt = (
 };
 
 /**
- * SupabaseUserReleasesRepository
+ * createSupabaseUserReleasesRepository
  */
 
-export class SupabaseUserReleasesRepository implements UserReleasesRepository {
-  private supabase: SupabaseClient;
-
-  constructor(supabase: SupabaseClient) {
-    this.supabase = supabase;
-  }
-
+export const createSupabaseUserReleasesRepository = (
+  supabase: SupabaseClient
+): UserReleasesRepository => ({
   async findRecent(
     userId: string,
     limit: number
   ): Promise<AlbumWithListenedAt[]> {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('user_releases')
       .select(RECENT_ALBUM_SELECT)
       .eq('user_id', userId)
@@ -161,10 +157,10 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     }
 
     return (data ?? []).map(mapToAlbumWithListenedAt);
-  }
+  },
 
   async findDailyPick(userId: string): Promise<AlbumWithDate | null> {
-    const { count } = await this.supabase
+    const { count } = await supabase
       .from('user_releases')
       .select('*', {
         count: 'exact',
@@ -180,7 +176,7 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
 
     const offset = Math.floor(Math.random() * count);
 
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('user_releases')
       .select(DAILY_PICK_SELECT)
       .eq('user_id', userId)
@@ -198,10 +194,10 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     }
 
     return mapToAlbumWithDate(data[0]);
-  }
+  },
 
   async findOldestListened(userId: string): Promise<Album | null> {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('user_releases')
       .select(RECENT_ALBUM_SELECT)
       .eq('user_id', userId)
@@ -221,10 +217,10 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     }
 
     return mapToAlbum(data[0]);
-  }
+  },
 
   async findUpNext(userId: string, limit: number): Promise<Album[]> {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('user_releases')
       .select(RECENT_ALBUM_SELECT)
       .eq('user_id', userId)
@@ -238,10 +234,10 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     }
 
     return (data ?? []).map(mapToAlbum);
-  }
+  },
 
   async findAllByUser(userId: string): Promise<CollectionAlbum[]> {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('user_releases')
       .select(ALL_FIELDS_SELECT)
       .eq('user_id', userId)
@@ -252,14 +248,14 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     }
 
     return (data ?? []).map(mapCollectionAlbum);
-  }
+  },
 
   async create(data: {
     userId: string;
     releaseId: string;
     status: CollectionStatus;
   }): Promise<void> {
-    const { error } = await this.supabase.from('user_releases').insert({
+    const { error } = await supabase.from('user_releases').insert({
       user_id: data.userId,
       release_id: data.releaseId,
       status: data.status,
@@ -268,14 +264,14 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     if (error) {
       throw error;
     }
-  }
+  },
 
   async upsert(data: {
     userId: string;
     releaseId: string;
     status: CollectionStatus;
   }): Promise<void> {
-    const { error } = await this.supabase.from('user_releases').upsert(
+    const { error } = await supabase.from('user_releases').upsert(
       {
         user_id: data.userId,
         release_id: data.releaseId,
@@ -290,13 +286,13 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     if (error) {
       throw error;
     }
-  }
+  },
 
   async findByRelease(
     releaseId: string,
     userId: string
   ): Promise<{ id: string } | null> {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('user_releases')
       .select('id')
       .eq('release_id', releaseId)
@@ -307,10 +303,10 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
       throw error;
     }
     return data;
-  }
+  },
 
   async markAsListened(userReleaseId: string): Promise<void> {
-    const { error } = await this.supabase
+    const { error } = await supabase
       .from('user_releases')
       .update({
         is_listened: true,
@@ -322,14 +318,14 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     if (error) {
       throw error;
     }
-  }
+  },
 
   async updatePriority(
     releaseId: string,
     userId: string,
     priority: PriorityLevel
   ): Promise<void> {
-    const { error } = await this.supabase
+    const { error } = await supabase
       .from('user_releases')
       .update({
         priority,
@@ -341,10 +337,10 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     if (error) {
       throw error;
     }
-  }
+  },
 
   async archive(releaseId: string, userId: string): Promise<void> {
-    const { error } = await this.supabase
+    const { error } = await supabase
       .from('user_releases')
       .update({
         archived_at: new Date().toISOString(),
@@ -356,10 +352,10 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     if (error) {
       throw error;
     }
-  }
+  },
 
   async unarchive(releaseId: string, userId: string): Promise<void> {
-    const { error } = await this.supabase
+    const { error } = await supabase
       .from('user_releases')
       .update({
         archived_at: null,
@@ -371,5 +367,5 @@ export class SupabaseUserReleasesRepository implements UserReleasesRepository {
     if (error) {
       throw error;
     }
-  }
-}
+  },
+});
