@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { createMusicSearchRepository } from '../music-search';
+import { createDeezerMusicSearchRepository } from '../music-search';
 import type { Repositories } from '../types';
 import { createSupabaseAnalyticsRepository } from './analytics';
 import { createSupabaseArtistsRepository } from './artists';
@@ -18,7 +18,7 @@ export const createSupabaseRepositories = (
   supabase: SupabaseClient
 ): Repositories => ({
   releases: createSupabaseReleasesRepository(supabase),
-  musicSearch: createMusicSearchRepository(supabase),
+  musicSearch: createDeezerMusicSearchRepository(supabase),
   userReleases: createSupabaseUserReleasesRepository(supabase),
   tracks: createSupabaseTracksRepository(supabase),
   stats: createSupabaseStatsRepository(supabase),
