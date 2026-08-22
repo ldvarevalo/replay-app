@@ -13,7 +13,7 @@ import type { ArtistRole, ReleasesRepository, SearchResults } from '../types';
  */
 
 const getPrimaryName = (
-  items: Array<Record<string, unknown>> | undefined,
+  items: Record<string, unknown>[] | undefined,
   key: string
 ): string =>
   ((items?.[0]?.[key] as Record<string, unknown>)?.name as string) ?? '';
@@ -48,7 +48,7 @@ interface UserReleaseData {
  */
 
 const parseUserReleaseData = (
-  userReleases: Array<Record<string, unknown>> | undefined
+  userReleases: Record<string, unknown>[] | undefined
 ): UserReleaseData => {
   const row = userReleases?.[0];
 
@@ -63,18 +63,18 @@ const parseUserReleaseData = (
 
 const mapAlbumDetailRow = (row: Record<string, unknown>): AlbumDetail => {
   const releaseArtists = row.release_artists as
-    Array<Record<string, unknown>> | undefined;
+    Record<string, unknown>[] | undefined;
   const releaseGenres = row.release_genres as
-    Array<Record<string, unknown>> | undefined;
+    Record<string, unknown>[] | undefined;
 
   const tracks: Track[] = (
-    (row.tracks as Array<Record<string, unknown>> | undefined) ?? []
+    (row.tracks as Record<string, unknown>[] | undefined) ?? []
   )
     .sort(sortByPosition)
     .map(t => mapTrackRow(t));
 
   const userReleaseData = parseUserReleaseData(
-    row.user_releases as Array<Record<string, unknown>> | undefined
+    row.user_releases as Record<string, unknown>[] | undefined
   );
 
   return {

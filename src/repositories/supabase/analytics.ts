@@ -17,9 +17,7 @@ const extractOldestEntry = (
 
   const oldest = rows[0];
   const releases = oldest.releases as Record<string, unknown>;
-  const releaseArtists = releases.release_artists as Array<
-    Record<string, unknown>
-  >;
+  const releaseArtists = releases.release_artists as Record<string, unknown>[];
   const artistName =
     ((releaseArtists?.[0]?.artists as Record<string, unknown>)
       ?.name as string) ?? '';

@@ -45,7 +45,9 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if (!fontsLoaded) return;
+    if (!fontsLoaded) {
+      return;
+    }
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {

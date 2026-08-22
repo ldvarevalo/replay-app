@@ -128,7 +128,7 @@ export const createTestRepositories = (
 
   const result = { ...noop } as Record<keyof Repositories, unknown>;
 
-  for (const key of Object.keys(overrides) as Array<keyof Repositories>) {
+  for (const key of Object.keys(overrides) as (keyof Repositories)[]) {
     const override = overrides[key];
 
     if (!override) {

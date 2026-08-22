@@ -60,20 +60,26 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     adapter
       .getSession()
       .then((initialSession: AuthSession) => {
-        if (cancelled) return;
+        if (cancelled) {
+          return;
+        }
         setSession(initialSession);
         setUser(initialSession.user);
         authStore.setUser(initialSession.user);
         setIsLoading(false);
       })
       .catch(() => {
-        if (cancelled) return;
+        if (cancelled) {
+          return;
+        }
         setIsLoading(false);
       });
 
     const unsubscribe = adapter.onAuthStateChange(
       (updatedSession: AuthSession | null) => {
-        if (cancelled) return;
+        if (cancelled) {
+          return;
+        }
         const newUser = updatedSession?.user ?? null;
         setSession(updatedSession ?? { user: null, accessToken: null });
         setUser(newUser);
