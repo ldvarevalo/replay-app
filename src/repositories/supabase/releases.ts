@@ -63,11 +63,9 @@ const parseUserReleaseData = (
 
 const mapAlbumDetailRow = (row: Record<string, unknown>): AlbumDetail => {
   const releaseArtists = row.release_artists as
-    | Array<Record<string, unknown>>
-    | undefined;
+    Array<Record<string, unknown>> | undefined;
   const releaseGenres = row.release_genres as
-    | Array<Record<string, unknown>>
-    | undefined;
+    Array<Record<string, unknown>> | undefined;
 
   const tracks: Track[] = (
     (row.tracks as Array<Record<string, unknown>> | undefined) ?? []

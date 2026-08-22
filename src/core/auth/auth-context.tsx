@@ -16,7 +16,10 @@ import type { AuthAdapter, AuthSession, AuthUser } from './types';
  * Types
  */
 
-export type UseSignInResult = (email: string, password: string) => Promise<void>;
+export type UseSignInResult = (
+  email: string,
+  password: string
+) => Promise<void>;
 export type UseSignOutResult = () => Promise<void>;
 
 interface AuthContextValue {
@@ -72,9 +75,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       (updatedSession: AuthSession | null) => {
         if (cancelled) return;
         const newUser = updatedSession?.user ?? null;
-        setSession(
-          updatedSession ?? { user: null, accessToken: null }
-        );
+        setSession(updatedSession ?? { user: null, accessToken: null });
         setUser(newUser);
         authStore.setUser(newUser);
       }

@@ -9,7 +9,7 @@ export function useColorScheme() {
   const isClient = useSyncExternalStore(
     () => () => {},
     () => true,
-    () => false,
+    () => false
   );
   return isClient ? colorScheme : 'light';
 }

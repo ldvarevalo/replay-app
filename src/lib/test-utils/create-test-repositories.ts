@@ -77,12 +77,16 @@ const createNoopRepositories = (): Repositories => ({
   },
   artists: {
     findByName: jest.fn().mockResolvedValue(null),
-    create: jest.fn().mockImplementation((name: string) => Promise.resolve(name)),
+    create: jest
+      .fn()
+      .mockImplementation((name: string) => Promise.resolve(name)),
     search: jest.fn().mockResolvedValue([] as LookupResult[]),
   },
   genres: {
     findByName: jest.fn().mockResolvedValue(null),
-    create: jest.fn().mockImplementation((name: string) => Promise.resolve(name)),
+    create: jest
+      .fn()
+      .mockImplementation((name: string) => Promise.resolve(name)),
     search: jest.fn().mockResolvedValue([] as LookupResult[]),
   },
   sessions: {

@@ -71,8 +71,7 @@ const DAILY_PICK_SELECT = `
 
 const getArtistName = (releases: Record<string, unknown>): string => {
   const releaseArtists = releases.release_artists as
-    | Array<Record<string, unknown>>
-    | undefined;
+    Array<Record<string, unknown>> | undefined;
 
   return (
     ((releaseArtists?.[0]?.artists as Record<string, unknown>)

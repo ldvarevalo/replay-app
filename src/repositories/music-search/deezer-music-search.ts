@@ -31,7 +31,7 @@ export class DeezerMusicSearchRepository implements MusicSearchRepository {
         return [];
       }
       const json = (await res.json()) as DeezerSearchResponse;
-      return json.data.map((album) => ({
+      return json.data.map(album => ({
         id: String(album.id),
         title: album.title,
         artist: album.artist.name,

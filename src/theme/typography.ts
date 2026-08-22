@@ -35,19 +35,17 @@ export const typography = {
 } as const;
 
 export type TypographyVariant =
-  | 'display'
-  | 'title'
-  | 'heading'
-  | 'body'
-  | 'label'
-  | 'navLink';
+  'display' | 'title' | 'heading' | 'body' | 'label' | 'navLink';
 
-export const typographyVariants: Record<TypographyVariant, {
-  family: keyof typeof typography.family;
-  size: keyof typeof typography.size;
-  weight: keyof typeof typography.weight;
-  letterSpacing: keyof typeof typography.letterSpacing;
-}> = {
+export const typographyVariants: Record<
+  TypographyVariant,
+  {
+    family: keyof typeof typography.family;
+    size: keyof typeof typography.size;
+    weight: keyof typeof typography.weight;
+    letterSpacing: keyof typeof typography.letterSpacing;
+  }
+> = {
   display: {
     family: 'headingBold',
     size: '2xl',

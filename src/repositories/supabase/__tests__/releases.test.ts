@@ -39,7 +39,10 @@ describe('SupabaseReleasesRepository.findByTitleAndArtist', () => {
       select: jest.fn().mockReturnValue(selectChain),
     });
     const repo = new SupabaseReleasesRepository(supabase);
-    const id = await repo.findByTitleAndArtist('A.RELEASE.TITLE', 'A.ARTIST.NAME');
+    const id = await repo.findByTitleAndArtist(
+      'A.RELEASE.TITLE',
+      'A.ARTIST.NAME'
+    );
     expect(id).toBe('A.RELEASE.ID');
   });
 
@@ -54,7 +57,10 @@ describe('SupabaseReleasesRepository.findByTitleAndArtist', () => {
       select: jest.fn().mockReturnValue(selectChain),
     });
     const repo = new SupabaseReleasesRepository(supabase);
-    const id = await repo.findByTitleAndArtist('NONEXISTENT.TITLE', 'NOBODY.NAME');
+    const id = await repo.findByTitleAndArtist(
+      'NONEXISTENT.TITLE',
+      'NOBODY.NAME'
+    );
     expect(id).toBeNull();
   });
 

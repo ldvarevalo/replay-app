@@ -11,7 +11,8 @@ const getSupabaseUrl = (): string => {
 };
 
 const getSupabaseAnonKey = (): string => {
-  const key = Constants.expoConfig?.extra?.supabaseAnonKey as string | undefined;
+  const key = Constants.expoConfig?.extra?.supabaseAnonKey as
+    string | undefined;
   if (!key) {
     throw new Error('supabaseAnonKey is not defined in app config extra');
   }
