@@ -18,7 +18,7 @@ export const createSupabaseRepositories = (
   supabase: SupabaseClient
 ): Repositories => ({
   releases: createSupabaseReleasesRepository(supabase),
-  musicSearch: createMusicSearchRepository(),
+  musicSearch: createMusicSearchRepository(supabase),
   userReleases: createSupabaseUserReleasesRepository(supabase),
   tracks: createSupabaseTracksRepository(supabase),
   stats: createSupabaseStatsRepository(supabase),
