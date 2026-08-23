@@ -1,14 +1,36 @@
 import { Platform, StyleSheet, Text, type TextProps } from 'react-native';
+import { type FunctionComponent } from 'react';
 
 import { Fonts, ThemeColor } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
-export type ThemedTextProps = TextProps & {
-  type?: 'default' | 'title' | 'small' | 'smallBold' | 'subtitle' | 'link' | 'linkPrimary' | 'code';
-  themeColor?: ThemeColor;
-};
+/**
+ * Types
+ */
 
-export function ThemedText({ style, type = 'default', themeColor, ...rest }: ThemedTextProps) {
+export interface ThemedTextProps extends TextProps {
+  type?:
+    | 'default'
+    | 'title'
+    | 'small'
+    | 'smallBold'
+    | 'subtitle'
+    | 'link'
+    | 'linkPrimary'
+    | 'code';
+  themeColor?: ThemeColor;
+}
+
+/**
+ * ThemedText
+ */
+
+export const ThemedText: FunctionComponent<ThemedTextProps> = ({
+  style,
+  type = 'default',
+  themeColor,
+  ...rest
+}) => {
   const theme = useTheme();
 
   return (
@@ -28,7 +50,7 @@ export function ThemedText({ style, type = 'default', themeColor, ...rest }: The
       {...rest}
     />
   );
-}
+};
 
 const styles = StyleSheet.create({
   small: {

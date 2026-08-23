@@ -2,14 +2,16 @@ import { useSyncExternalStore } from 'react';
 import { useColorScheme as useRNColorScheme } from 'react-native';
 
 /**
+ * useColorScheme
+ *
  * To support static rendering, this value needs to be re-calculated on the client side for web
  */
-export function useColorScheme() {
+export const useColorScheme = () => {
   const colorScheme = useRNColorScheme();
   const isClient = useSyncExternalStore(
     () => () => {},
     () => true,
-    () => false,
+    () => false
   );
   return isClient ? colorScheme : 'light';
-}
+};

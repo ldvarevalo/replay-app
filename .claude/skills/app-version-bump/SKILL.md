@@ -1,5 +1,4 @@
 ---
-
 name: app-version-bump
 description: "Decidir si corresponde hacer bump de versión (NONE/PATCH/MINOR/MAJOR) sobre `expo.version` en `app.json` para una app React Native + Expo, analizando el diff entre la branch actual y su branch base. También clasifica si los cambios parecen tener impacto nativo para informar el proceso de release. Usá esta skill cada vez que el usuario mencione versionado, bump de versión, corte de release, prepare-release, antes de mergear a master, pregunte 'qué versión le pongo', o pida revisar cambios para release. No la uses para modificar Android versionCode ni runtimeVersion: EAS los administra automáticamente."
 ---
@@ -19,9 +18,9 @@ La decisión de versión y el impacto nativo son dimensiones independientes.
 
 La app usa tres conceptos distintos:
 
-* `expo.version` — versión funcional/producto. **Esta la administramos nosotros.**
-* `android.versionCode` — identificador incremental del binario Android. EAS lo administra automáticamente. **No tocar.**
-* `runtimeVersion.policy: "fingerprint"` — compatibilidad binario↔OTA. **No tocar.**
+- `expo.version` — versión funcional/producto. **Esta la administramos nosotros.**
+- `android.versionCode` — identificador incremental del binario Android. EAS lo administra automáticamente. **No tocar.**
+- `runtimeVersion.policy: "fingerprint"` — compatibilidad binario↔OTA. **No tocar.**
 
 La detección de impacto nativo de esta skill es únicamente informativa.
 
@@ -37,9 +36,9 @@ La decisión autoritativa de si un cambio puede distribuirse por OTA o requiere 
 
 2. Detectá la branch base. Probá en este orden y usá la primera que funcione:
 
-   * `git symbolic-ref refs/remotes/origin/HEAD` y quitale el prefijo `refs/remotes/origin/`
-   * `master`
-   * `main`
+   - `git symbolic-ref refs/remotes/origin/HEAD` y quitale el prefijo `refs/remotes/origin/`
+   - `master`
+   - `main`
 
 3. Confirmá que existen commits propios de la branch:
 
@@ -64,14 +63,14 @@ La decisión autoritativa de si un cambio puede distribuirse por OTA o requiere 
 
    Si el diff es muy grande:
 
-   * revisá primero `src/`, `app/` y componentes funcionales;
-   * revisá `package.json`, `yarn.lock`, `app.json`, `eas.json` y configuración Expo;
-   * usá `git diff <base>...HEAD --stat` para identificar el resto de archivos relevantes.
+   - revisá primero `src/`, `app/` y componentes funcionales;
+   - revisá `package.json`, `yarn.lock`, `app.json`, `eas.json` y configuración Expo;
+   - usá `git diff <base>...HEAD --stat` para identificar el resto de archivos relevantes.
 
 6. Clasificá independientemente:
 
-   * cambio funcional: `NONE`, `PATCH`, `MINOR`, `MAJOR`;
-   * impacto nativo: `NONE`, `NATIVE`, `UNKNOWN`.
+   - cambio funcional: `NONE`, `PATCH`, `MINOR`, `MAJOR`;
+   - impacto nativo: `NONE`, `NATIVE`, `UNKNOWN`.
 
 7. Si la decisión funcional es distinta de `NONE`, actualizá únicamente `expo.version` en `app.json`.
 
@@ -85,21 +84,21 @@ La decisión autoritativa de si un cambio puede distribuirse por OTA o requiere 
 
 Usar cuando los cambios sean exclusivamente internos y no modifiquen perceptiblemente el producto:
 
-* refactors;
-* reorganización de código;
-* renames internos;
-* arquitectura;
-* limpieza o código muerto;
-* deprecaciones internas;
-* tooling;
-* lint, format, typecheck, prettier, eslint;
-* CI/CD;
-* documentación;
-* tests;
-* scripts de desarrollo;
-* configuración sin impacto funcional;
-* cambios cuyo único objetivo sea regenerar un binario;
-* upgrades técnicos que no cambian comportamiento visible.
+- refactors;
+- reorganización de código;
+- renames internos;
+- arquitectura;
+- limpieza o código muerto;
+- deprecaciones internas;
+- tooling;
+- lint, format, typecheck, prettier, eslint;
+- CI/CD;
+- documentación;
+- tests;
+- scripts de desarrollo;
+- configuración sin impacto funcional;
+- cambios cuyo único objetivo sea regenerar un binario;
+- upgrades técnicos que no cambian comportamiento visible.
 
 No bumpear por el simple hecho de requerir un nuevo APK.
 
@@ -109,12 +108,12 @@ No bumpear por el simple hecho de requerir un nuevo APK.
 
 Usar cuando haya:
 
-* bug fixes visibles para el usuario;
-* correcciones de comportamiento existente;
-* pequeños ajustes de UX/UI;
-* correcciones de textos relevantes;
-* mejoras menores de performance percibidas;
-* pequeños cambios funcionales que no agregan una capacidad nueva.
+- bug fixes visibles para el usuario;
+- correcciones de comportamiento existente;
+- pequeños ajustes de UX/UI;
+- correcciones de textos relevantes;
+- mejoras menores de performance percibidas;
+- pequeños cambios funcionales que no agregan una capacidad nueva.
 
 Ejemplo:
 
@@ -128,12 +127,12 @@ Ejemplo:
 
 Usar cuando haya:
 
-* una nueva feature;
-* una nueva pantalla con capacidad funcional;
-* un nuevo flujo completo;
-* una nueva capacidad para el usuario;
-* una mejora funcional relevante;
-* cambios importantes de UX que amplían sustancialmente una funcionalidad existente.
+- una nueva feature;
+- una nueva pantalla con capacidad funcional;
+- un nuevo flujo completo;
+- una nueva capacidad para el usuario;
+- una mejora funcional relevante;
+- cambios importantes de UX que amplían sustancialmente una funcionalidad existente.
 
 Ejemplo:
 
@@ -147,10 +146,10 @@ Ejemplo:
 
 Usar únicamente para cambios excepcionales:
 
-* incompatibilidades significativas;
-* eliminación o reemplazo de funcionalidades centrales;
-* redefinición importante del producto;
-* breaking changes relevantes para usuarios o integraciones.
+- incompatibilidades significativas;
+- eliminación o reemplazo de funcionalidades centrales;
+- redefinición importante del producto;
+- breaking changes relevantes para usuarios o integraciones.
 
 Usar este nivel de forma conservadora.
 
@@ -178,17 +177,17 @@ Esta clasificación **no modifica la versión por sí misma**.
 
 Usar cuando los cambios parecen compatibles con el binario actual y afectan solamente:
 
-* TypeScript / JavaScript;
-* componentes React;
-* estilos;
-* navegación JS;
-* lógica de negocio JS;
-* requests / API;
-* validaciones;
-* textos;
-* assets que pueden distribuirse mediante Expo Updates;
-* dependencias puramente JS;
-* documentación, tests o tooling sin impacto runtime.
+- TypeScript / JavaScript;
+- componentes React;
+- estilos;
+- navegación JS;
+- lógica de negocio JS;
+- requests / API;
+- validaciones;
+- textos;
+- assets que pueden distribuirse mediante Expo Updates;
+- dependencias puramente JS;
+- documentación, tests o tooling sin impacto runtime.
 
 Ejemplo:
 
@@ -207,19 +206,19 @@ Usar cuando el diff modifica o probablemente modifica el runtime nativo.
 
 Ejemplos:
 
-* agregar, eliminar o actualizar una dependencia con código nativo;
-* cambios en Expo config plugins;
-* cambios de permisos Android/iOS;
-* cambios relevantes de `app.json` que afectan configuración nativa;
-* cambios de package/bundle identifier;
-* cambios en AndroidManifest o Info.plist;
-* cambios en `android/` o `ios/`;
-* código Kotlin, Java, Swift u Objective-C;
-* cambios de Expo SDK;
-* cambios de React Native;
-* cambios de configuración nativa de una librería;
-* assets/configuración que requieren regenerar el proyecto nativo;
-* cambios que requieren `expo prebuild` o un nuevo development/release build.
+- agregar, eliminar o actualizar una dependencia con código nativo;
+- cambios en Expo config plugins;
+- cambios de permisos Android/iOS;
+- cambios relevantes de `app.json` que afectan configuración nativa;
+- cambios de package/bundle identifier;
+- cambios en AndroidManifest o Info.plist;
+- cambios en `android/` o `ios/`;
+- código Kotlin, Java, Swift u Objective-C;
+- cambios de Expo SDK;
+- cambios de React Native;
+- cambios de configuración nativa de una librería;
+- assets/configuración que requieren regenerar el proyecto nativo;
+- cambios que requieren `expo prebuild` o un nuevo development/release build.
 
 Ejemplo:
 
@@ -238,11 +237,11 @@ Usar cuando no sea posible determinar con suficiente confianza si el cambio afec
 
 Casos típicos:
 
-* dependencia nueva cuyo comportamiento nativo no sea evidente;
-* upgrade ambiguo;
-* config plugin indirecto;
-* cambios complejos de configuración Expo;
-* librerías desconocidas.
+- dependencia nueva cuyo comportamiento nativo no sea evidente;
+- upgrade ambiguo;
+- config plugin indirecto;
+- cambios complejos de configuración Expo;
+- librerías desconocidas.
 
 No asumir `NATIVE` ni `NONE` si falta evidencia.
 
@@ -336,22 +335,22 @@ nuevo binario
 
 # Reglas adicionales
 
-* No bumpear por cada OTA.
-* No bumpear porque exista un nuevo APK.
-* No modificar `android.versionCode`.
-* No agregar `android.versionCode` si no existe.
-* No modificar `runtimeVersion`.
-* No modificar la política `fingerprint`.
-* No intentar calcular manualmente `runtimeVersion`.
-* Una dependencia nueva no implica automáticamente un bump funcional.
-* Una dependencia nueva sí debe analizarse para determinar posible impacto nativo.
-* Diferenciar siempre impacto de producto de impacto técnico.
-* Si varios cambios justifican distintos niveles de versión, aplicar el nivel funcional más alto.
-* No hacer bumps preventivos.
-* Si el impacto funcional no está claro, usar `NONE`.
-* Si el impacto nativo no está claro, usar `UNKNOWN`.
-* No modificar otros campos de `app.json`.
-* Bumpear únicamente el segmento correspondiente.
+- No bumpear por cada OTA.
+- No bumpear porque exista un nuevo APK.
+- No modificar `android.versionCode`.
+- No agregar `android.versionCode` si no existe.
+- No modificar `runtimeVersion`.
+- No modificar la política `fingerprint`.
+- No intentar calcular manualmente `runtimeVersion`.
+- Una dependencia nueva no implica automáticamente un bump funcional.
+- Una dependencia nueva sí debe analizarse para determinar posible impacto nativo.
+- Diferenciar siempre impacto de producto de impacto técnico.
+- Si varios cambios justifican distintos niveles de versión, aplicar el nivel funcional más alto.
+- No hacer bumps preventivos.
+- Si el impacto funcional no está claro, usar `NONE`.
+- Si el impacto nativo no está claro, usar `UNKNOWN`.
+- No modificar otros campos de `app.json`.
+- Bumpear únicamente el segmento correspondiente.
 
 Ejemplos:
 

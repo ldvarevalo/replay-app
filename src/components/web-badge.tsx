@@ -7,12 +7,20 @@ import { ThemedView } from './themed-view';
 
 import { Spacing } from '@/constants/theme';
 
-export function WebBadge() {
+/**
+ * WebBadge
+ */
+
+export const WebBadge = () => {
   const scheme = useColorScheme();
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="code" themeColor="textSecondary" style={styles.versionText}>
+      <ThemedText
+        type="code"
+        themeColor="textSecondary"
+        style={styles.versionText}
+      >
         v{version}
       </ThemedText>
       <Image
@@ -25,7 +33,7 @@ export function WebBadge() {
       />
     </ThemedView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
