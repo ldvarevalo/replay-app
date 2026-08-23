@@ -24,7 +24,6 @@ import {
   ThemeProvider,
 } from 'expo-router/react-navigation';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
 /**
@@ -51,12 +50,6 @@ export default function RootLayout() {
     Newsreader_600SemiBold_Italic,
     Newsreader_700Bold_Italic,
   });
-
-  useEffect(() => {
-    if (!fontsLoaded) {
-      return;
-    }
-  }, [fontsLoaded]);
 
   if (!fontsLoaded) {
     return null;
