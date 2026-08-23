@@ -1,3 +1,13 @@
+/**
+ * Types
+ */
+
+export type Spacing = keyof typeof spacing;
+
+/**
+ * spacing
+ */
+
 export const spacing = {
   half: 2,
   one: 4,
@@ -7,5 +17,3 @@ export const spacing = {
   five: 32,
   six: 64,
 } as const;
-
-export type Spacing = keyof typeof spacing;

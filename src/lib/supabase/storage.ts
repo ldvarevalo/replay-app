@@ -1,6 +1,10 @@
 import * as SecureStore from 'expo-secure-store';
 import type { SupportedStorage } from '@supabase/supabase-js';
 
+/**
+ * createSecureStoreStorage
+ */
+
 export const createSecureStoreStorage = (): SupportedStorage => ({
   getItem: async (key: string): Promise<string | null> =>
     SecureStore.getItemAsync(key),

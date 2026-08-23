@@ -9,6 +9,10 @@ import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 
+/**
+ * Helpers
+ */
+
 const getDevMenuHint = () => {
   if (Platform.OS === 'web') {
     return <ThemedText type="small">use browser devtools</ThemedText>;
@@ -27,6 +31,10 @@ const getDevMenuHint = () => {
     </ThemedText>
   );
 };
+
+/**
+ * HomeScreen
+ */
 
 export default function HomeScreen() {
   return (

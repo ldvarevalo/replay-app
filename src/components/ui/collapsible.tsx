@@ -8,6 +8,10 @@ import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
+/**
+ * Collapsible
+ */
+
 export const Collapsible = ({
   children,
   title,

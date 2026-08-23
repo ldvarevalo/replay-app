@@ -27,10 +27,18 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
+/**
+ * Constants
+ */
+
 const queryClient = createQueryClient();
 const supabase = createSupabaseClient();
 setRepositories(createSupabaseRepositories(supabase));
 const authAdapter = createSupabaseAdapter(supabase);
+
+/**
+ * RootLayout
+ */
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();

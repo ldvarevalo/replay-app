@@ -1,9 +1,21 @@
 import type { AuthUser } from './types';
 
+/**
+ * Types
+ */
+
 type Listener = (user: AuthUser | null) => void;
+
+/**
+ * Constants
+ */
 
 let currentUser: AuthUser | null = null;
 const listeners: Set<Listener> = new Set();
+
+/**
+ * authStore
+ */
 
 export const authStore = {
   getUser: (): AuthUser | null => currentUser,

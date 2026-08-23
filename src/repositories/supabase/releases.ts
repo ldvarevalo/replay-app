@@ -9,6 +9,18 @@ import type {
 import type { ArtistRole, ReleasesRepository, SearchResults } from '../types';
 
 /**
+ * Types
+ */
+
+interface UserReleaseData {
+  status: CollectionStatus | null;
+  isListened: boolean;
+  priority: PriorityLevel | null;
+  addedAt: string | null;
+  archivedAt: string | null;
+}
+
+/**
  * Helpers
  */
 
@@ -30,22 +42,6 @@ const mapTrackRow = (t: Record<string, unknown>): Track => ({
   side: (t.side as string) ?? '',
   position: (t.position as number) ?? 0,
 });
-
-/**
- * Types
- */
-
-interface UserReleaseData {
-  status: CollectionStatus | null;
-  isListened: boolean;
-  priority: PriorityLevel | null;
-  addedAt: string | null;
-  archivedAt: string | null;
-}
-
-/**
- * Helpers
- */
 
 const parseUserReleaseData = (
   userReleases: Record<string, unknown>[] | undefined

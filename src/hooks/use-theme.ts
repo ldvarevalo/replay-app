@@ -6,6 +6,10 @@
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
+/**
+ * useTheme
+ */
+
 export const useTheme = () => {
   const scheme = useColorScheme();
   const theme = scheme === 'unspecified' ? 'light' : scheme;

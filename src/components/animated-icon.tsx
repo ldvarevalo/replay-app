@@ -5,8 +5,52 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import Animated, { Easing, Keyframe } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
+/**
+ * Constants
+ */
+
 const INITIAL_SCALE_FACTOR = Dimensions.get('screen').height / 90;
 const DURATION = 600;
+
+const keyframe = new Keyframe({
+  0: {
+    transform: [{ scale: INITIAL_SCALE_FACTOR }],
+  },
+  100: {
+    transform: [{ scale: 1 }],
+    easing: Easing.elastic(0.7),
+  },
+});
+
+const logoKeyframe = new Keyframe({
+  0: {
+    transform: [{ scale: 1.3 }],
+    opacity: 0,
+  },
+  40: {
+    transform: [{ scale: 1.3 }],
+    opacity: 0,
+    easing: Easing.elastic(0.7),
+  },
+  100: {
+    opacity: 1,
+    transform: [{ scale: 1 }],
+    easing: Easing.elastic(0.7),
+  },
+});
+
+const glowKeyframe = new Keyframe({
+  0: {
+    transform: [{ rotateZ: '0deg' }],
+  },
+  100: {
+    transform: [{ rotateZ: '7200deg' }],
+  },
+});
+
+/**
+ * AnimatedSplashOverlay
+ */
 
 export const AnimatedSplashOverlay: FunctionComponent = () => {
   const [animate, setAnimate] = useState(false);
@@ -68,41 +112,9 @@ export const AnimatedSplashOverlay: FunctionComponent = () => {
   );
 };
 
-const keyframe = new Keyframe({
-  0: {
-    transform: [{ scale: INITIAL_SCALE_FACTOR }],
-  },
-  100: {
-    transform: [{ scale: 1 }],
-    easing: Easing.elastic(0.7),
-  },
-});
-
-const logoKeyframe = new Keyframe({
-  0: {
-    transform: [{ scale: 1.3 }],
-    opacity: 0,
-  },
-  40: {
-    transform: [{ scale: 1.3 }],
-    opacity: 0,
-    easing: Easing.elastic(0.7),
-  },
-  100: {
-    opacity: 1,
-    transform: [{ scale: 1 }],
-    easing: Easing.elastic(0.7),
-  },
-});
-
-const glowKeyframe = new Keyframe({
-  0: {
-    transform: [{ rotateZ: '0deg' }],
-  },
-  100: {
-    transform: [{ rotateZ: '7200deg' }],
-  },
-});
+/**
+ * AnimatedIcon
+ */
 
 export const AnimatedIcon: FunctionComponent = () => (
   <View style={styles.iconContainer}>

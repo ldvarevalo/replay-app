@@ -1,3 +1,13 @@
+/**
+ * Types
+ */
+
+export type ColorTokens = { readonly [K in keyof typeof darkColors]: string };
+
+/**
+ * darkColors
+ */
+
 export const darkColors = {
   background: '#131313',
   surface: '#131313',
@@ -26,6 +36,10 @@ export const darkColors = {
   chart5: '#ffffff',
 } as const;
 
+/**
+ * lightColors
+ */
+
 export const lightColors = {
   background: '#fafafa',
   surface: '#ffffff',
@@ -53,5 +67,3 @@ export const lightColors = {
   chart4: '#1a1a1a',
   chart5: '#1a1a1a',
 } as const;
-
-export type ColorTokens = { readonly [K in keyof typeof darkColors]: string };

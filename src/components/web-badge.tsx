@@ -7,6 +7,10 @@ import { ThemedView } from './themed-view';
 
 import { Spacing } from '@/constants/theme';
 
+/**
+ * WebBadge
+ */
+
 export const WebBadge = () => {
   const scheme = useColorScheme();
 

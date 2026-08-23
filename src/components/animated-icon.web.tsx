@@ -4,9 +4,12 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { Keyframe, Easing } from 'react-native-reanimated';
 
 import classes from './animated-icon.module.css';
-const DURATION = 300;
 
-export const AnimatedSplashOverlay: FunctionComponent = () => null;
+/**
+ * Constants
+ */
+
+const DURATION = 300;
 
 const keyframe = new Keyframe({
   0: {
@@ -52,6 +55,16 @@ const glowKeyframe = new Keyframe({
     transform: [{ rotateZ: '7200deg' }],
   },
 });
+
+/**
+ * AnimatedSplashOverlay
+ */
+
+export const AnimatedSplashOverlay: FunctionComponent = () => null;
+
+/**
+ * AnimatedIcon
+ */
 
 export const AnimatedIcon: FunctionComponent = () => (
   <View style={styles.iconContainer}>

@@ -4,6 +4,10 @@ import { type FunctionComponent } from 'react';
 import { Fonts, ThemeColor } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
+/**
+ * Types
+ */
+
 export interface ThemedTextProps extends TextProps {
   type?:
     | 'default'
@@ -16,6 +20,10 @@ export interface ThemedTextProps extends TextProps {
     | 'code';
   themeColor?: ThemeColor;
 }
+
+/**
+ * ThemedText
+ */
 
 export const ThemedText: FunctionComponent<ThemedTextProps> = ({
   style,

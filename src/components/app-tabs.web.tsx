@@ -16,6 +16,10 @@ import { ThemedView } from './themed-view';
 
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 
+/**
+ * AppTabs
+ */
+
 export default function AppTabs() {
   return (
     <Tabs>
@@ -33,6 +37,10 @@ export default function AppTabs() {
     </Tabs>
   );
 }
+
+/**
+ * TabButton
+ */
 
 export const TabButton: FunctionComponent<TabTriggerSlotProps> = ({
   children,
@@ -53,6 +61,10 @@ export const TabButton: FunctionComponent<TabTriggerSlotProps> = ({
     </ThemedView>
   </Pressable>
 );
+
+/**
+ * CustomTabList
+ */
 
 export const CustomTabList: FunctionComponent<TabListProps> = props => {
   const scheme = useColorScheme();

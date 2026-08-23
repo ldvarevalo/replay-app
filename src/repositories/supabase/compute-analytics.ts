@@ -1,5 +1,9 @@
 import type { MostListenedAlbum } from '@/types/domain';
 
+/**
+ * Types
+ */
+
 export interface ViewRow {
   user_id: string;
   session_id: string;
@@ -26,6 +30,10 @@ interface SessionMetrics {
   averageSessionSeconds: number;
   completionRate: number;
 }
+
+/**
+ * Helpers
+ */
 
 const computeMostListened = (
   rows: ViewRow[]
@@ -109,6 +117,10 @@ const computePeakDay = (rows: ViewRow[]): string => {
   }
   return [...freq.entries()].sort((a, b) => b[1] - a[1])[0][0];
 };
+
+/**
+ * computeSessionMetrics
+ */
 
 export const computeSessionMetrics = (rows: ViewRow[]): SessionMetrics => {
   if (rows.length === 0) {

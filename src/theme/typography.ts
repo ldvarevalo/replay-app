@@ -1,3 +1,14 @@
+/**
+ * Types
+ */
+
+export type TypographyVariant =
+  'display' | 'title' | 'heading' | 'body' | 'label' | 'navLink';
+
+/**
+ * typography
+ */
+
 export const typography = {
   family: {
     sans: 'Inter_400Regular',
@@ -34,8 +45,9 @@ export const typography = {
   },
 } as const;
 
-export type TypographyVariant =
-  'display' | 'title' | 'heading' | 'body' | 'label' | 'navLink';
+/**
+ * typographyVariants
+ */
 
 export const typographyVariants: Record<
   TypographyVariant,
