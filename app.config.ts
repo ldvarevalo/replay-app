@@ -25,16 +25,12 @@ const config: ExpoConfig = {
     predictiveBackGestureEnabled: false,
     package: 'com.arevalolucianadg.replayapp',
   },
-  web: {
-    output: 'static',
-    favicon: './assets/images/favicon.png',
-  },
   plugins: [
     'expo-router',
     [
       'expo-splash-screen',
       {
-        backgroundColor: '#208AEF',
+        backgroundColor: '#131313',
         image: './assets/images/splash-icon.png',
         imageWidth: 76,
       },
