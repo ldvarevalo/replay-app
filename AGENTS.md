@@ -68,6 +68,11 @@ This app is being ported 1:1 from the web app at `../frontend-crate/`. Conventio
 - **Granular commits:** one per logical group (component, hook, fix)
 - **Branches:** `feat/<name>`, `fix/<name>`, `chore/<name>` — lowercase kebab-case
 
+## Code Style
+
+- **React components:** tipar con `FunctionComponent<Props>`. Destructurar sin anotación inline. Ej: `export const HintRow: FunctionComponent<HintRowProps> = ({title, hint}) => ...`. NO `({title, hint}: HintRowProps) => ...`. Hooks NO se tipean como FC — solo componentes.
+- **Arrow functions:** enforced por ESLint (`func-style: ['error', 'expression', { allowArrowFunctions: true }]` + `prefer-arrow-callback`). `export default function` se tolera (la regla no lo flagea).
+
 ## Landmines (read before touching tooling)
 
 - **Unistyles 3.0 API** is `StyleSheet.configure({ themes, settings: { adaptiveThemes: true } })` (single call). `UnistylesRegistry` is GONE. `useStyles` is GONE — call `const styles = stylesheet()` inside the component. `initialTheme` and `adaptiveThemes` are **mutually exclusive** (discriminated union). Requires declaration merging in `src/theme/unistyles.d.ts` to type `UnistylesThemes` (without it, `theme` is `never`).
