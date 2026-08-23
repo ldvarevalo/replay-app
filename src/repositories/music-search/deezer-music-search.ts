@@ -14,11 +14,16 @@ export const createDeezerMusicSearchRepository = (
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      const token = session?.access_token ?? '';
+      const token = session?.access_token;
+
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
 
       const res = await fetch(
         `${getApiUrl()}/api/music/search?q=${encodeURIComponent(query)}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers }
       );
 
       if (!res.ok) {

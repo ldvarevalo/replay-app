@@ -19,6 +19,13 @@ const mockSupabase = (token: string | null): jest.Mocked<SupabaseClient> =>
     },
   }) as unknown as jest.Mocked<SupabaseClient>;
 
+const mockSupabaseWithoutSession = (): jest.Mocked<SupabaseClient> =>
+  ({
+    auth: {
+      getSession: jest.fn().mockResolvedValue({ data: { session: null } }),
+    },
+  }) as unknown as jest.Mocked<SupabaseClient>;
+
 const mockResponse = (status: number, body: unknown): Response =>
   ({
     ok: status >= 200 && status < 300,
@@ -63,5 +70,18 @@ describe('createDeezerMusicSearchRepository.search', () => {
     global.fetch = jest.fn().mockRejectedValue(new Error('network down'));
     const repo = createDeezerMusicSearchRepository(mockSupabase('A.TOKEN'));
     await expect(repo.search('coltrane')).resolves.toEqual([]);
+  });
+
+  it('should omit Authorization header when session is null', async () => {
+    const handleSearchFetchMock = jest
+      .fn()
+      .mockResolvedValue(mockResponse(200, []));
+    global.fetch = handleSearchFetchMock;
+    const repo = createDeezerMusicSearchRepository(
+      mockSupabaseWithoutSession()
+    );
+    await repo.search('coltrane');
+    const headers = handleSearchFetchMock.mock.calls[0][1].headers;
+    expect(headers.Authorization).toBeUndefined();
   });
 });
