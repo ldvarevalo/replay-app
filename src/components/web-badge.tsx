@@ -7,7 +7,7 @@ import { ThemedView } from './themed-view';
 
 import { Spacing } from '@/constants/theme';
 
-export function WebBadge() {
+export const WebBadge = () => {
   const scheme = useColorScheme();
 
   return (
@@ -29,7 +29,7 @@ export function WebBadge() {
       />
     </ThemedView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

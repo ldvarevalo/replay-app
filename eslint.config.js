@@ -18,6 +18,8 @@ module.exports = defineConfig([
       'max-statements': ['error', { max: 12 }],
       'no-nested-ternary': 'error',
       'arrow-body-style': ['error', 'as-needed'],
+      'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+      'prefer-arrow-callback': 'error',
       '@typescript-eslint/array-type': ['error', { default: 'array' }],
     },
   },

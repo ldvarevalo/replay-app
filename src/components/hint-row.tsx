@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { ThemedText } from './themed-text';
@@ -11,19 +11,17 @@ type HintRowProps = {
   hint?: ReactNode;
 };
 
-export function HintRow({
+export const HintRow: FunctionComponent<HintRowProps> = ({
   title = 'Try editing',
   hint = 'app/index.tsx',
-}: HintRowProps) {
-  return (
-    <View style={styles.stepRow}>
-      <ThemedText type="small">{title}</ThemedText>
-      <ThemedView type="backgroundSelected" style={styles.codeSnippet}>
-        <ThemedText themeColor="textSecondary">{hint}</ThemedText>
-      </ThemedView>
-    </View>
-  );
-}
+}) => (
+  <View style={styles.stepRow}>
+    <ThemedText type="small">{title}</ThemedText>
+    <ThemedView type="backgroundSelected" style={styles.codeSnippet}>
+      <ThemedText themeColor="textSecondary">{hint}</ThemedText>
+    </ThemedView>
+  </View>
+);
 
 const styles = StyleSheet.create({
   stepRow: {

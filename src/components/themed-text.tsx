@@ -1,4 +1,5 @@
 import { Platform, StyleSheet, Text, type TextProps } from 'react-native';
+import { type FunctionComponent } from 'react';
 
 import { Fonts, ThemeColor } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
@@ -16,12 +17,12 @@ export type ThemedTextProps = TextProps & {
   themeColor?: ThemeColor;
 };
 
-export function ThemedText({
+export const ThemedText: FunctionComponent<ThemedTextProps> = ({
   style,
   type = 'default',
   themeColor,
   ...rest
-}: ThemedTextProps) {
+}) => {
   const theme = useTheme();
 
   return (
@@ -41,7 +42,7 @@ export function ThemedText({
       {...rest}
     />
   );
-}
+};
 
 const styles = StyleSheet.create({
   small: {

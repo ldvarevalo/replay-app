@@ -9,13 +9,13 @@ export type ThemedViewProps = ViewProps & {
   type?: ThemeColor;
 };
 
-export function ThemedView({
+export const ThemedView = ({
   style,
   lightColor,
   darkColor,
   type,
   ...otherProps
-}: ThemedViewProps) {
+}: ThemedViewProps) => {
   const theme = useTheme();
 
   return (
@@ -24,4 +24,4 @@ export function ThemedView({
       {...otherProps}
     />
   );
-}
+};

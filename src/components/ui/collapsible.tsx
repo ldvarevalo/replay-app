@@ -8,10 +8,10 @@ import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
-export function Collapsible({
+export const Collapsible = ({
   children,
   title,
-}: PropsWithChildren & { title: string }) {
+}: PropsWithChildren & { title: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
 
@@ -49,7 +49,7 @@ export function Collapsible({
       )}
     </ThemedView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   heading: {
