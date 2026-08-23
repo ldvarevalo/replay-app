@@ -4,7 +4,7 @@ import type { MostListenedAlbum } from '@/types/domain';
  * Types
  */
 
-export interface ViewRow {
+export interface UserAnalyticsResponse {
   user_id: string;
   session_id: string;
   duration_seconds: number | null;
@@ -36,7 +36,7 @@ interface SessionMetrics {
  */
 
 const computeMostListened = (
-  rows: ViewRow[]
+  rows: UserAnalyticsResponse[]
 ): MostListenedAlbum | undefined => {
   const albumDuration = new Map<
     string,
@@ -79,7 +79,7 @@ const computeMostListened = (
 };
 
 const computeTop = (
-  rows: ViewRow[],
+  rows: UserAnalyticsResponse[],
   field: 'artist_name' | 'genre_name',
   limit = 6
 ): string[] => {
@@ -109,7 +109,7 @@ const getDayName = (dateStr: string): string => {
   return days[new Date(dateStr).getDay()];
 };
 
-const computePeakDay = (rows: ViewRow[]): string => {
+const computePeakDay = (rows: UserAnalyticsResponse[]): string => {
   const freq = new Map<string, number>();
   for (const row of rows) {
     const day = getDayName(row.listened_at);
@@ -122,7 +122,9 @@ const computePeakDay = (rows: ViewRow[]): string => {
  * computeSessionMetrics
  */
 
-export const computeSessionMetrics = (rows: ViewRow[]): SessionMetrics => {
+export const computeSessionMetrics = (
+  rows: UserAnalyticsResponse[]
+): SessionMetrics => {
   if (rows.length === 0) {
     return {
       listenedAlbums: 0,

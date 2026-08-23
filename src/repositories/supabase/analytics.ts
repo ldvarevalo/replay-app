@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { computeSessionMetrics } from './compute-analytics';
-import type { ViewRow } from './compute-analytics';
+import type { UserAnalyticsResponse } from './compute-analytics';
 import type {
   AnalyticsData,
   BacklogEntry,
@@ -39,10 +39,10 @@ const extractOldestEntry = (
   };
 };
 
-const queryViewRows = async (
+const queryUserAnalyticsResponses = async (
   supabase: SupabaseClient,
   params: { userId: string; startDate: string; endDate: string }
-): Promise<ViewRow[]> => {
+): Promise<UserAnalyticsResponse[]> => {
   const { data, error } = await supabase
     .from('user_analytics')
     .select('*')
@@ -53,7 +53,7 @@ const queryViewRows = async (
   if (error) {
     throw error;
   }
-  return (data ?? []) as ViewRow[];
+  return (data ?? []) as UserAnalyticsResponse[];
 };
 
 const queryDiscoverBacklog = async (
@@ -143,7 +143,7 @@ export const createSupabaseAnalyticsRepository = (
     endDate: string
   ): Promise<AnalyticsData> {
     const [viewRows, backlog, funnel] = await Promise.all([
-      queryViewRows(supabase, { userId, startDate, endDate }),
+      queryUserAnalyticsResponses(supabase, { userId, startDate, endDate }),
       queryDiscoverBacklog(supabase, userId),
       queryAddedAndOwned(supabase, { userId, startDate, endDate }),
     ]);

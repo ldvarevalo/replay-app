@@ -72,6 +72,7 @@ This app is being ported 1:1 from the web app at `../frontend-crate/`. Conventio
 
 - **React components:** tipar con `FunctionComponent<Props>`. Destructurar sin anotación inline. Ej: `export const HintRow: FunctionComponent<HintRowProps> = ({title, hint}) => ...`. NO `({title, hint}: HintRowProps) => ...`. Hooks NO se tipean como FC — solo componentes.
 - **Preferir `interface` sobre `type`:** `interface` para object shapes (intersections via `extends`). `type` reservado para unions, mapped types (`{[K in keyof T]: ...}`), function types y derivaciones con `keyof`/`typeof`.
+- **Sufijo `Response` + snake_case solo en responses:** las interfaces que tipan un response de Supabase/API llevan sufijo `Response` (ej. `UserAnalyticsResponse`) y son las **únicas** con campos en `snake_case`. Todos los demás types (domain types, props, helpers) usan `camelCase`. Los repos convierten snake_case → camelCase en el borde (map functions).
 - **Orden de secciones en archivos:** `Types → Constants → Helpers → named export`. Cada sección se separa con JSDoc `/** SectionName */`. Si Types/Constants están interleaved, reagrupar (todos los types primero) sin duplicar headers. Cada named export lleva su propio header (`/** useAuth */`, `/** HintRow */`). Imports siempre fuera de los section separators.
 - **Arrow functions:** enforced por ESLint (`func-style: ['error', 'expression', { allowArrowFunctions: true }]` + `prefer-arrow-callback`). `export default function` se tolera (la regla no lo flagea).
 
