@@ -145,10 +145,6 @@ export interface AnalyticsRepository {
   ): Promise<AnalyticsData>;
 }
 
-/**
- * Constants
- */
-
 export interface Repositories {
   releases: ReleasesRepository;
   musicSearch: MusicSearchRepository;
