@@ -19,11 +19,14 @@ Path aliases (`tsconfig.json`): `@/*` → `src/*`, `@/assets/*` → `assets/*`.
 yarn install              # Install deps
 yarn start                # Expo dev server
 yarn ios / yarn android   # Open in simulator (NOT yarn web — see Landmines)
-yarn lint                 # ESLint via expo lint
+yarn lint                 # Runs `yarn format` then `expo lint`. It may WRITE files.
+yarn format               # Prettier write — auto-formats ts/tsx/json/md
+yarn format:check         # Prettier check without writing
 yarn typecheck            # tsc --noEmit
 yarn test                 # jest (jest-expo preset)
 yarn test <pattern>       # Run one test file
 yarn test:watch           # jest watch mode
+yarn reset-project        # Starter-template reset (deletes src/app/* and recreates boilerplate — DON'T run on this app)
 yarn build:android:dev|preview|production   # EAS build invocations
 yarn update:preview       # EAS update to preview channel
 ```
@@ -81,19 +84,20 @@ This app is being ported 1:1 from the web app at `../frontend-crate/`. Conventio
 - **Unistyles 3.0 API** is `StyleSheet.configure({ themes, settings: { adaptiveThemes: true } })` (single call). `UnistylesRegistry` is GONE. `useStyles` is GONE — call `const styles = stylesheet()` inside the component. `initialTheme` and `adaptiveThemes` are **mutually exclusive** (discriminated union). Requires declaration merging in `src/theme/unistyles.d.ts` to type `UnistylesThemes` (without it, `theme` is `never`).
 - **Babel plugin order** (`babel.config.js`): `react-native-reanimated/plugin` first (it bundles worklets in Reanimated 4), then `react-native-unistyles/plugin` with `{ root: 'src' }`. Do **NOT** add `react-native-worklets/plugin` separately — causes "Duplicate plugin/preset detected" error.
 - **`app.config.ts` not `app.json`** — env-driven config. `app.json` was deleted in Task 5.
-- **Supabase env vars** `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` must be set (in `.env` or `expo-env.d.ts`) or `createSupabaseClient()` throws at module load.
+- **Supabase env vars** `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY` y `EXPO_PUBLIC_API_URL` deben estar seteadas (en `.env` o via Expo) o `createSupabaseClient()` / `apiUrl` throw al cargar el módulo.
 - **`yarn web` is in scripts but the design spec says no web target.** Still works (the `web` block in `app.config.ts` is intact); sub-spec 2 should remove it.
 - **RNTL 14's `renderHook` is async** — tests must `await` it. The auth-context test file already follows this.
 - **CI does NOT run tests** — only lint + typecheck. Run `yarn test` locally before pushing.
 
 ## Testing
 
-- `yarn test` — 18+ tests across 5 suites (query-client, supabase storage, authStore, auth-context, releases)
+- `yarn test` — 22 tests across 6 suites (query-client, supabase storage, authStore, auth-context, releases, music-search)
 - **Test conventions:** `it` always starts with `"should ..."`; `/** Mocks */` then `/** Tests */` JSDoc sections; mock callbacks named `handle<Verb><Noun>Mock`; test data in `UPPER_SNAKE_CASE` with `_MOCK` suffix, dotted convention (`A.RELEASE.ID`).
 - **No `beforeEach` in tests** — `jest.setup.ts` does `setRepositories(createTestRepositories())` globally. Only `afterEach(clearAllMocks)` when needed.
 - **Per-repo noop factory:** `createTestRepositories({ releases: { findById: jest.fn().mockResolvedValue(...) } })` for partial overrides.
 - **Test framework is jest-expo, not vitest** (web uses vitest — different stack, not a violation).
 - **Test files co-located** as `__tests__/*.test.ts` next to the unit under test.
+- **Files globbed for section convention:** `*.test.ts(x)` y `__tests__/**` se relajan en ESLint (`max-nested-callbacks`, `max-statements`).
 
 ## Plans and Specs
 
@@ -105,6 +109,6 @@ This app is being ported 1:1 from the web app at `../frontend-crate/`. Conventio
 ## Setup
 
 - `yarn install`
-- Create `.env` with `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` (do not commit)
+- Create `.env` with `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY` y `EXPO_PUBLIC_API_URL` (no commitear). La app no bootea si falta alguna.
 - For EAS builds: `EXPO_TOKEN` env var, `eas-cli` already installed
 - Node 22 (per CI)
