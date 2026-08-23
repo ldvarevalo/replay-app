@@ -1,14 +1,14 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { createMusicSearchRepository } from '../music-search';
+import { createDeezerMusicSearchRepository } from '../music-search';
 import type { Repositories } from '../types';
-import { SupabaseAnalyticsRepository } from './analytics';
-import { SupabaseArtistsRepository } from './artists';
-import { SupabaseGenresRepository } from './genres';
-import { SupabaseListeningSessionsRepository } from './listening-sessions';
-import { SupabaseReleasesRepository } from './releases';
-import { SupabaseStatsRepository } from './stats';
-import { SupabaseTracksRepository } from './tracks';
-import { SupabaseUserReleasesRepository } from './user-releases';
+import { createSupabaseAnalyticsRepository } from './analytics';
+import { createSupabaseArtistsRepository } from './artists';
+import { createSupabaseGenresRepository } from './genres';
+import { createSupabaseListeningSessionsRepository } from './listening-sessions';
+import { createSupabaseReleasesRepository } from './releases';
+import { createSupabaseStatsRepository } from './stats';
+import { createSupabaseTracksRepository } from './tracks';
+import { createSupabaseUserReleasesRepository } from './user-releases';
 
 /**
  * createSupabaseRepositories
@@ -17,13 +17,13 @@ import { SupabaseUserReleasesRepository } from './user-releases';
 export const createSupabaseRepositories = (
   supabase: SupabaseClient
 ): Repositories => ({
-  releases: new SupabaseReleasesRepository(supabase),
-  musicSearch: createMusicSearchRepository(),
-  userReleases: new SupabaseUserReleasesRepository(supabase),
-  tracks: new SupabaseTracksRepository(supabase),
-  stats: new SupabaseStatsRepository(supabase),
-  artists: new SupabaseArtistsRepository(supabase),
-  genres: new SupabaseGenresRepository(supabase),
-  sessions: new SupabaseListeningSessionsRepository(supabase),
-  analytics: new SupabaseAnalyticsRepository(supabase),
+  releases: createSupabaseReleasesRepository(supabase),
+  musicSearch: createDeezerMusicSearchRepository(supabase),
+  userReleases: createSupabaseUserReleasesRepository(supabase),
+  tracks: createSupabaseTracksRepository(supabase),
+  stats: createSupabaseStatsRepository(supabase),
+  artists: createSupabaseArtistsRepository(supabase),
+  genres: createSupabaseGenresRepository(supabase),
+  sessions: createSupabaseListeningSessionsRepository(supabase),
+  analytics: createSupabaseAnalyticsRepository(supabase),
 });

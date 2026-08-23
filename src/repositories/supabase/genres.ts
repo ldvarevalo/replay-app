@@ -2,18 +2,14 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { GenresRepository, LookupResult } from '../types';
 
 /**
- * SupabaseGenresRepository
+ * createSupabaseGenresRepository
  */
 
-export class SupabaseGenresRepository implements GenresRepository {
-  private supabase: SupabaseClient;
-
-  constructor(supabase: SupabaseClient) {
-    this.supabase = supabase;
-  }
-
+export const createSupabaseGenresRepository = (
+  supabase: SupabaseClient
+): GenresRepository => ({
   async findByName(name: string): Promise<string | null> {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('genres')
       .select('id')
       .ilike('name', name)
@@ -24,10 +20,10 @@ export class SupabaseGenresRepository implements GenresRepository {
     }
 
     return data?.id ?? null;
-  }
+  },
 
   async create(name: string): Promise<string> {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('genres')
       .insert({ name })
       .select('id')
@@ -38,10 +34,10 @@ export class SupabaseGenresRepository implements GenresRepository {
     }
 
     return data.id;
-  }
+  },
 
   async search(query: string): Promise<LookupResult[]> {
-    const { data } = await this.supabase
+    const { data } = await supabase
       .from('genres')
       .select('id, name')
       .ilike('name', `%${query}%`)
@@ -49,5 +45,5 @@ export class SupabaseGenresRepository implements GenresRepository {
       .order('name');
 
     return data ?? [];
-  }
-}
+  },
+});

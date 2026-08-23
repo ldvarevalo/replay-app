@@ -8,6 +8,10 @@ import type {
 } from '@/types/domain';
 import type { AnalyticsRepository } from '../types';
 
+/**
+ * Helpers
+ */
+
 const extractOldestEntry = (
   rows: Record<string, unknown>[]
 ): BacklogEntry | undefined => {
@@ -35,22 +39,113 @@ const extractOldestEntry = (
   };
 };
 
-export class SupabaseAnalyticsRepository implements AnalyticsRepository {
-  private supabase: SupabaseClient;
+const queryViewRows = async (
+  supabase: SupabaseClient,
+  params: { userId: string; startDate: string; endDate: string }
+): Promise<ViewRow[]> => {
+  const { data, error } = await supabase
+    .from('user_analytics')
+    .select('*')
+    .eq('user_id', params.userId)
+    .gte('listened_at', params.startDate)
+    .lte('listened_at', params.endDate);
 
-  constructor(supabase: SupabaseClient) {
-    this.supabase = supabase;
+  if (error) {
+    throw error;
+  }
+  return (data ?? []) as ViewRow[];
+};
+
+const queryDiscoverBacklog = async (
+  supabase: SupabaseClient,
+  userId: string
+): Promise<DiscoverBacklog> => {
+  const { data, error } = await supabase
+    .from('user_releases')
+    .select(
+      `
+      id,
+      release_id,
+      created_at,
+      releases!inner (
+        id,
+        title,
+        cover_url,
+        release_artists!inner (
+          artists!inner (name)
+        )
+      )
+    `
+    )
+    .eq('user_id', userId)
+    .eq('status', 'discover')
+    .eq('is_listened', false)
+    .is('archived_at', null)
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    throw error;
   }
 
+  const rows = data ?? [];
+
+  return {
+    count: rows.length,
+    oldestEntry: extractOldestEntry(rows),
+  };
+};
+
+const queryAddedAndOwned = async (
+  supabase: SupabaseClient,
+  params: { userId: string; startDate: string; endDate: string }
+): Promise<{ addedToWant: number; markedOwned: number }> => {
+  const { data, error } = await supabase
+    .from('user_releases')
+    .select('status, created_at, updated_at, is_listened')
+    .eq('user_id', params.userId);
+
+  if (error) {
+    throw error;
+  }
+
+  const rows = data ?? [];
+
+  const addedToWant = rows.filter(
+    r =>
+      r.status === 'want' &&
+      r.updated_at >= params.startDate &&
+      r.updated_at <= params.endDate
+  ).length;
+
+  const markedOwned = rows.filter(
+    r =>
+      r.status === 'owned' &&
+      r.updated_at >= params.startDate &&
+      r.updated_at <= params.endDate
+  ).length;
+
+  return {
+    addedToWant,
+    markedOwned,
+  };
+};
+
+/**
+ * createSupabaseAnalyticsRepository
+ */
+
+export const createSupabaseAnalyticsRepository = (
+  supabase: SupabaseClient
+): AnalyticsRepository => ({
   async find(
     userId: string,
     startDate: string,
     endDate: string
   ): Promise<AnalyticsData> {
     const [viewRows, backlog, funnel] = await Promise.all([
-      this.queryViewRows(userId, startDate, endDate),
-      this.queryDiscoverBacklog(userId),
-      this.queryAddedAndOwned(userId, startDate, endDate),
+      queryViewRows(supabase, { userId, startDate, endDate }),
+      queryDiscoverBacklog(supabase, userId),
+      queryAddedAndOwned(supabase, { userId, startDate, endDate }),
     ]);
 
     return {
@@ -58,98 +153,5 @@ export class SupabaseAnalyticsRepository implements AnalyticsRepository {
       ...funnel,
       discoverBacklog: backlog,
     };
-  }
-
-  private async queryViewRows(
-    userId: string,
-    startDate: string,
-    endDate: string
-  ): Promise<ViewRow[]> {
-    const { data, error } = await this.supabase
-      .from('user_analytics')
-      .select('*')
-      .eq('user_id', userId)
-      .gte('listened_at', startDate)
-      .lte('listened_at', endDate);
-
-    if (error) {
-      throw error;
-    }
-    return (data ?? []) as ViewRow[];
-  }
-
-  private async queryDiscoverBacklog(userId: string): Promise<DiscoverBacklog> {
-    const { data, error } = await this.supabase
-      .from('user_releases')
-      .select(
-        `
-        id,
-        release_id,
-        created_at,
-        releases!inner (
-          id,
-          title,
-          cover_url,
-          release_artists!inner (
-            artists!inner (name)
-          )
-        )
-      `
-      )
-      .eq('user_id', userId)
-      .eq('status', 'discover')
-      .eq('is_listened', false)
-      .is('archived_at', null)
-      .order('created_at', { ascending: true });
-
-    if (error) {
-      throw error;
-    }
-
-    const rows = data ?? [];
-
-    return {
-      count: rows.length,
-      oldestEntry: extractOldestEntry(rows),
-    };
-  }
-
-  private async queryAddedAndOwned(
-    userId: string,
-    startDate: string,
-    endDate: string
-  ): Promise<{
-    addedToWant: number;
-    markedOwned: number;
-  }> {
-    const { data, error } = await this.supabase
-      .from('user_releases')
-      .select('status, created_at, updated_at, is_listened')
-      .eq('user_id', userId);
-
-    if (error) {
-      throw error;
-    }
-
-    const rows = data ?? [];
-
-    const addedToWant = rows.filter(
-      r =>
-        r.status === 'want' &&
-        r.updated_at >= startDate &&
-        r.updated_at <= endDate
-    ).length;
-
-    const markedOwned = rows.filter(
-      r =>
-        r.status === 'owned' &&
-        r.updated_at >= startDate &&
-        r.updated_at <= endDate
-    ).length;
-
-    return {
-      addedToWant,
-      markedOwned,
-    };
-  }
-}
+  },
+});

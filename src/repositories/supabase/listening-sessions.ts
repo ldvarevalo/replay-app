@@ -7,23 +7,19 @@ import type {
 import type { ListeningSessionsRepository } from '../types';
 
 /**
- * SupabaseListeningSessionsRepository
+ * createSupabaseListeningSessionsRepository
  */
 
-export class SupabaseListeningSessionsRepository implements ListeningSessionsRepository {
-  private supabase: SupabaseClient;
-
-  constructor(supabase: SupabaseClient) {
-    this.supabase = supabase;
-  }
-
+export const createSupabaseListeningSessionsRepository = (
+  supabase: SupabaseClient
+): ListeningSessionsRepository => ({
   async create(data: {
     userReleaseId: string;
     scope: ListeningScope;
     sourceFormat: SourceFormat;
     durationSeconds: number | null;
   }): Promise<void> {
-    const { error } = await this.supabase.from('listening_sessions').insert({
+    const { error } = await supabase.from('listening_sessions').insert({
       user_release_id: data.userReleaseId,
       scope: data.scope,
       source_format: data.sourceFormat,
@@ -33,13 +29,13 @@ export class SupabaseListeningSessionsRepository implements ListeningSessionsRep
     if (error) {
       throw error;
     }
-  }
+  },
 
   async findByRelease(
     releaseId: string,
     userId: string
   ): Promise<ListeningSession[]> {
-    const { data: userRelease, error: lookupError } = await this.supabase
+    const { data: userRelease, error: lookupError } = await supabase
       .from('user_releases')
       .select('id')
       .eq('release_id', releaseId)
@@ -54,7 +50,7 @@ export class SupabaseListeningSessionsRepository implements ListeningSessionsRep
       return [];
     }
 
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('listening_sessions')
       .select('*')
       .eq('user_release_id', userRelease.id)
@@ -73,5 +69,5 @@ export class SupabaseListeningSessionsRepository implements ListeningSessionsRep
       listenedAt: row.listened_at,
       createdAt: row.created_at,
     }));
-  }
-}
+  },
+});

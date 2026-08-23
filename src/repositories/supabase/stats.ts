@@ -34,18 +34,14 @@ const sumListeningSeconds = async (
 };
 
 /**
- * SupabaseStatsRepository
+ * createSupabaseStatsRepository
  */
 
-export class SupabaseStatsRepository implements StatsRepository {
-  private supabase: SupabaseClient;
-
-  constructor(supabase: SupabaseClient) {
-    this.supabase = supabase;
-  }
-
+export const createSupabaseStatsRepository = (
+  supabase: SupabaseClient
+): StatsRepository => ({
   async findStats(userId: string): Promise<HomeStats> {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from('user_releases')
       .select('id, status')
       .eq('user_id', userId)
@@ -58,7 +54,7 @@ export class SupabaseStatsRepository implements StatsRepository {
     const rows = data ?? [];
     const releaseIds = rows.map(r => r.id);
     const totalSeconds = await sumListeningSeconds(
-      this.supabase,
+      supabase,
       releaseIds,
       getFirstOfMonth()
     );
@@ -68,5 +64,5 @@ export class SupabaseStatsRepository implements StatsRepository {
       listeningTimeHours: Math.round(totalSeconds / SECONDS_PER_HOUR),
       wantToBuy: rows.filter(row => row.status === 'want').length,
     };
-  }
-}
+  },
+});

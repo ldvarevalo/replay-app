@@ -1,12 +1,4 @@
-import { DeezerMusicSearchRepository } from './deezer-music-search';
-import type { MusicSearchRepository } from './types';
+import { createDeezerMusicSearchRepository } from './deezer-music-search';
 
-/**
- * createMusicSearchRepository
- */
-
-export const createMusicSearchRepository = (): MusicSearchRepository =>
-  new DeezerMusicSearchRepository();
-
-export { DeezerMusicSearchRepository } from './deezer-music-search';
+export { createDeezerMusicSearchRepository };
 export type { MusicSearchRepository, SearchItem } from './types';

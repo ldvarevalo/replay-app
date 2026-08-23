@@ -1,46 +1,33 @@
-import type { MusicSearchRepository, SearchItem } from './types';
-
-const DEEZER_SEARCH_URL = 'https://api.deezer.com/search/album';
-
-interface DeezerAlbum {
-  id: number;
-  title: string;
-  cover_medium: string;
-  release_date: string;
-  artist: { name: string };
-  genres?: { data: { name: string }[] };
-}
-
-interface DeezerSearchResponse {
-  data: DeezerAlbum[];
-}
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { apiUrl } from '@/lib/env/api-url';
+import type { MusicSearchRepository, SearchItem } from '../types';
 
 /**
- * DeezerMusicSearchRepository
+ * createDeezerMusicSearchRepository
  */
 
-// ponytail: hits Deezer public API directly. Web used a backend proxy at
-// /api/music/search that did the same transform; mobile has no such endpoint.
-export class DeezerMusicSearchRepository implements MusicSearchRepository {
+export const createDeezerMusicSearchRepository = (
+  supabase: SupabaseClient
+): MusicSearchRepository => ({
   async search(query: string): Promise<SearchItem[]> {
-    try {
-      const res = await fetch(
-        `${DEEZER_SEARCH_URL}?q=${encodeURIComponent(query)}`
-      );
-      if (!res.ok) {
-        return [];
-      }
-      const json = (await res.json()) as DeezerSearchResponse;
-      return json.data.map(album => ({
-        id: String(album.id),
-        title: album.title,
-        artist: album.artist.name,
-        coverUrl: album.cover_medium,
-        year: album.release_date?.split('-')[0] ?? '',
-        genre: album.genres?.data?.[0]?.name ?? '',
-      }));
-    } catch {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    const token = session?.access_token;
+
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const res = await fetch(
+      `${apiUrl}/api/music/search?q=${encodeURIComponent(query)}`,
+      { headers }
+    );
+
+    if (!res.ok) {
       return [];
     }
-  }
-}
+    return (await res.json()) as SearchItem[];
+  },
+});
