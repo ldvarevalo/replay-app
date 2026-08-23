@@ -66,10 +66,10 @@ describe('createDeezerMusicSearchRepository.search', () => {
     await expect(repo.search('coltrane')).resolves.toEqual([]);
   });
 
-  it('should return [] when fetch throws', async () => {
+  it('should reject when fetch throws', async () => {
     global.fetch = jest.fn().mockRejectedValue(new Error('network down'));
     const repo = createDeezerMusicSearchRepository(mockSupabase('A.TOKEN'));
-    await expect(repo.search('coltrane')).resolves.toEqual([]);
+    await expect(repo.search('coltrane')).rejects.toThrow('network down');
   });
 
   it('should omit Authorization header when session is null', async () => {

@@ -1,13 +1,13 @@
 import Constants from 'expo-constants';
 
 /**
- * getApiUrl
+ * apiUrl
  */
 
-export const getApiUrl = (): string => {
-  const url = Constants.expoConfig?.extra?.apiUrl as string | undefined;
-  if (!url) {
-    throw new Error('apiUrl is not defined in app config extra');
-  }
-  return url;
-};
+const url = Constants.expoConfig?.extra?.apiUrl as string | undefined;
+
+if (!url) {
+  throw new Error('apiUrl is not defined in app config extra');
+}
+
+export const apiUrl: string = url;
