@@ -4,7 +4,7 @@ import { type FunctionComponent } from 'react';
 import { Fonts, ThemeColor } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
-export type ThemedTextProps = TextProps & {
+export interface ThemedTextProps extends TextProps {
   type?:
     | 'default'
     | 'title'
@@ -15,7 +15,7 @@ export type ThemedTextProps = TextProps & {
     | 'linkPrimary'
     | 'code';
   themeColor?: ThemeColor;
-};
+}
 
 export const ThemedText: FunctionComponent<ThemedTextProps> = ({
   style,

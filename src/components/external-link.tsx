@@ -5,9 +5,9 @@ import {
 } from 'expo-web-browser';
 import { type ComponentProps, type FunctionComponent } from 'react';
 
-type Props = Omit<ComponentProps<typeof Link>, 'href'> & {
+interface Props extends Omit<ComponentProps<typeof Link>, 'href'> {
   href: Href & string;
-};
+}
 
 export const ExternalLink: FunctionComponent<Props> = ({ href, ...rest }) => (
   <Link
