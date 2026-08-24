@@ -12,8 +12,18 @@ export type InputProps = TextInputProps;
  * Input
  */
 
-export const Input: FunctionComponent<InputProps> = ({ style, ...props }) => (
-  <TextInput {...props} style={[styles.input, style]} />
+export const Input: FunctionComponent<InputProps> = ({
+  placeholder,
+  accessibilityLabel,
+  style,
+  ...props
+}) => (
+  <TextInput
+    {...props}
+    placeholder={placeholder}
+    accessibilityLabel={accessibilityLabel ?? placeholder}
+    style={[styles.input, style]}
+  />
 );
 
 /**
@@ -28,6 +38,7 @@ const styles = StyleSheet.create(theme => ({
     paddingHorizontal: theme.spacing.three,
     paddingVertical: theme.spacing.two,
     color: theme.colors.onSurface,
+    placeholderTextColor: theme.colors.onSurfaceVariant,
     fontSize: 16,
   },
 }));

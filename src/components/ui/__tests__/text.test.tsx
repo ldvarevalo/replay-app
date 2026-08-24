@@ -57,6 +57,13 @@ describe('Text', () => {
     );
   });
 
+  it('should map caption variant tokens', async () => {
+    const view = await render(<Text variant="caption">Note</Text>);
+    expect(styleEntryAt(view, 'Note', 0)).toMatchObject(
+      variantStyleOf('caption')
+    );
+  });
+
   it('should resolve a color override to theme colors', async () => {
     const view = await render(<Text color="onSurfaceVariant">Muted</Text>);
     expect(styleEntryAt(view, 'Muted', 1)).toMatchObject({

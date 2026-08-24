@@ -3,6 +3,7 @@ import type { RenderResult } from '@testing-library/react-native';
 import { render } from '@/lib/test-utils/render-with-providers';
 import { lightColors } from '@/theme/colors';
 import { radius } from '@/theme/radius';
+import { spacing } from '@/theme/spacing';
 import { Input } from '../input';
 
 /**
@@ -21,6 +22,8 @@ type StyleEntry = Record<string, unknown>;
  * Helpers
  */
 
+// ponytail: RN TextInput has no implicit accessibilityRole, so getByRole('textbox')
+// does not match. Using testID for selector-based queries.
 const inputStyleAt = (view: RenderResult, index: number): StyleEntry =>
   view.getByTestId('input').props.style[index];
 
@@ -53,12 +56,39 @@ describe('Input', () => {
     expect(getByTestId('input').props.secureTextEntry).toBe(true);
   });
 
-  it('should resolve theme border and radius tokens', async () => {
+  it('should default accessibilityLabel to placeholder', async () => {
+    const { getByPlaceholderText } = await render(
+      <Input placeholder="Email" testID="input" />
+    );
+    expect(getByPlaceholderText('Email').props.accessibilityLabel).toBe(
+      'Email'
+    );
+  });
+
+  it('should respect an explicit accessibilityLabel', async () => {
+    const { getByPlaceholderText } = await render(
+      <Input
+        placeholder="Email"
+        accessibilityLabel="Email field"
+        testID="input"
+      />
+    );
+    expect(getByPlaceholderText('Email').props.accessibilityLabel).toBe(
+      'Email field'
+    );
+  });
+
+  it('should resolve theme border, padding, color, and placeholder tokens', async () => {
     const view = await render(<Input placeholder="x" testID="input" />);
     expect(inputStyleAt(view, 0)).toMatchObject({
       borderWidth: 1,
       borderColor: lightColors.outline,
       borderRadius: radius.sm,
+      paddingHorizontal: spacing.three,
+      paddingVertical: spacing.two,
+      color: lightColors.onSurface,
+      fontSize: 16,
+      placeholderTextColor: lightColors.onSurfaceVariant,
     });
   });
 });

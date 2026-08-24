@@ -3,6 +3,7 @@ import type { RenderResult } from '@testing-library/react-native';
 import { render } from '@/lib/test-utils/render-with-providers';
 import { lightColors } from '@/theme/colors';
 import { radius } from '@/theme/radius';
+import { spacing } from '@/theme/spacing';
 import { Card } from '../card';
 
 /**
@@ -41,6 +42,7 @@ describe('Card', () => {
     expect(cardStyleAt(view, 0)).toMatchObject({
       backgroundColor: lightColors.surface,
       borderRadius: radius.md,
+      padding: spacing.three,
     });
   });
 

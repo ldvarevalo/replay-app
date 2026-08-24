@@ -3,7 +3,7 @@
  */
 
 export type TypographyVariant =
-  'display' | 'title' | 'heading' | 'body' | 'label' | 'navLink';
+  'display' | 'title' | 'heading' | 'body' | 'caption' | 'label' | 'navLink';
 
 /**
  * typography
@@ -87,6 +87,12 @@ export const typographyVariants: Record<
     size: '2xs',
     weight: 'medium',
     letterSpacing: 'wider',
+  },
+  caption: {
+    family: 'sans',
+    size: 'xs',
+    weight: 'normal',
+    letterSpacing: 'normal',
   },
   navLink: {
     family: 'sansMedium',

@@ -28,7 +28,7 @@ export const ListItem: FunctionComponent<ListItemProps> = ({
     <View style={styles.body}>
       <Text variant="label">{title}</Text>
       {description && (
-        <Text variant="body" color="onSurfaceVariant">
+        <Text variant="caption" color="onSurfaceVariant">
           {description}
         </Text>
       )}
@@ -48,7 +48,7 @@ const styles = StyleSheet.create(theme => ({
     paddingVertical: theme.spacing.three,
     paddingHorizontal: theme.spacing.three,
     borderBottomWidth: 1,
-    borderBottomColor: theme.colors.outline,
+    borderBottomColor: theme.colors.outlineVariant,
     gap: theme.spacing.two,
   },
   body: { flex: 1 },
