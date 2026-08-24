@@ -1,20 +1,19 @@
 import type { RenderResult } from '@testing-library/react-native';
+import { StyleSheet } from 'react-native';
 import { render } from '@/lib/test-utils/render-with-providers';
 import { lightColors } from '@/theme/colors';
 import { Skeleton } from '../skeleton';
 
 /**
- * Types
- */
-
-type StyleEntry = Record<string, unknown>;
-
-/**
  * Helpers
  */
 
-const skeletonStyleAt = (view: RenderResult, index: number): StyleEntry =>
-  view.getByTestId('skeleton').props.style[index];
+const flattenedSkeletonStyle = (
+  view: RenderResult
+): Record<string, unknown> => {
+  const raw = view.getByTestId('skeleton').props.style;
+  return StyleSheet.flatten(raw) as Record<string, unknown>;
+};
 
 /**
  * Tests
@@ -30,10 +29,8 @@ describe('Skeleton', () => {
     const view = await render(
       <Skeleton testID="skeleton" width={120} height={24} borderRadius={4} />
     );
-    expect(skeletonStyleAt(view, 0)).toMatchObject({
+    expect(flattenedSkeletonStyle(view)).toMatchObject({
       backgroundColor: lightColors.outlineVariant,
-    });
-    expect(skeletonStyleAt(view, 1)).toMatchObject({
       width: 120,
       height: 24,
       borderRadius: 4,
@@ -42,8 +39,13 @@ describe('Skeleton', () => {
 
   it('should resolve theme outlineVariant as background color', async () => {
     const view = await render(<Skeleton testID="skeleton" />);
-    expect(skeletonStyleAt(view, 0)).toMatchObject({
+    expect(flattenedSkeletonStyle(view)).toMatchObject({
       backgroundColor: lightColors.outlineVariant,
     });
+  });
+
+  it('should render shimmer animation without throwing', async () => {
+    const { getByTestId } = await render(<Skeleton testID="skeleton" />);
+    expect(getByTestId('skeleton')).toBeTruthy();
   });
 });

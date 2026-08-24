@@ -8,6 +8,8 @@ jest.mock('expo-secure-store', () => ({
   deleteItemAsync: jest.fn(),
 }));
 
+jest.mock('react-native-reanimated');
+
 jest.mock('expo-constants', () => ({
   expoConfig: {
     extra: {

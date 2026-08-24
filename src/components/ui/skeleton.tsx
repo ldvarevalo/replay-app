@@ -1,6 +1,12 @@
-import type { FunctionComponent } from 'react';
-import { View, type ViewProps } from 'react-native';
+import { useEffect, type FunctionComponent } from 'react';
+import type { ViewProps } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+import Animated, {
+  Easing,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 
 /**
  * Types
@@ -22,12 +28,24 @@ export const Skeleton: FunctionComponent<SkeletonProps> = ({
   borderRadius,
   style,
   ...props
-}) => (
-  <View
-    {...props}
-    style={[styles.skeleton, { width, height, borderRadius }, style]}
-  />
-);
+}) => {
+  const opacity = useSharedValue(1);
+
+  useEffect(() => {
+    opacity.value = withRepeat(
+      withTiming(0.6, { duration: 800, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    );
+  }, [opacity]);
+
+  return (
+    <Animated.View
+      {...props}
+      style={[styles.skeleton, { width, height, borderRadius }, style]}
+    />
+  );
+};
 
 /**
  * Styles

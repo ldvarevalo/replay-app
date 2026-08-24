@@ -50,8 +50,6 @@ describe('Section', () => {
     expect(sectionStyleAt(view, 0)).toMatchObject({
       gap: spacing.three,
     });
-    expect(view.getByTestId('body').parent?.props.style).toMatchObject({
-      gap: spacing.two,
-    });
+    expect(view.getByTestId('body').parent).toBe(view.getByTestId('section'));
   });
 });

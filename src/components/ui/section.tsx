@@ -23,9 +23,7 @@ export const Section: FunctionComponent<SectionProps> = ({
 }) => (
   <View {...props} style={[styles.section, style]}>
     {header && <View>{header}</View>}
-    <View style={header ? styles.contentWithHeader : undefined}>
-      {children}
-    </View>
+    {children}
   </View>
 );
 
@@ -35,5 +33,4 @@ export const Section: FunctionComponent<SectionProps> = ({
 
 const styles = StyleSheet.create(theme => ({
   section: { gap: theme.spacing.three },
-  contentWithHeader: { gap: theme.spacing.two },
 }));

@@ -29,6 +29,13 @@ describe('EmptyState', () => {
     expect(getByText('No results')).toBeTruthy();
   });
 
+  it('should expose title as a header for accessibility', async () => {
+    const { getByText } = await render(
+      <EmptyState testID="empty" title="No results" />
+    );
+    expect(getByText('No results').props.accessibilityRole).toBe('header');
+  });
+
   it('should render description when provided', async () => {
     const { getByText } = await render(
       <EmptyState
@@ -68,7 +75,7 @@ describe('EmptyState', () => {
       alignItems: 'center',
       justifyContent: 'center',
       padding: spacing.four,
-      gap: spacing.two,
+      gap: spacing.three,
     });
   });
 });

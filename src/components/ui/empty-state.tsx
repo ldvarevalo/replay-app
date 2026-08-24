@@ -27,8 +27,8 @@ export const EmptyState: FunctionComponent<EmptyStateProps> = ({
   ...props
 }) => (
   <View {...props} style={[styles.container, style]}>
-    {icon && <View style={styles.icon}>{icon}</View>}
-    <Text variant="heading" align="center">
+    {icon && <View>{icon}</View>}
+    <Text variant="heading" align="center" accessibilityRole="header">
       {title}
     </Text>
     {description && (
@@ -36,7 +36,7 @@ export const EmptyState: FunctionComponent<EmptyStateProps> = ({
         {description}
       </Text>
     )}
-    {action && <View style={styles.action}>{action}</View>}
+    {action && <View>{action}</View>}
   </View>
 );
 
@@ -49,8 +49,6 @@ const styles = StyleSheet.create(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     padding: theme.spacing.four,
-    gap: theme.spacing.two,
+    gap: theme.spacing.three,
   },
-  icon: { marginBottom: theme.spacing.two },
-  action: { marginTop: theme.spacing.two },
 }));
