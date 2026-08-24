@@ -22,6 +22,7 @@
   "jest": {
     "preset": "jest-expo",
     "setupFilesAfterEnv": [
+      "<rootDir>/jest.unistyles.ts",
       "<rootDir>/jest.setup.ts"
     ]
   },

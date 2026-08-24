@@ -1,3 +1,4 @@
+import '@/theme';
 import { setRepositories } from '@/repositories/instance';
 import { createTestRepositories } from '@/lib/test-utils/create-test-repositories';
 
