@@ -2,14 +2,15 @@ import { fireEvent } from '@testing-library/react-native';
 import { View } from 'react-native';
 import type { LucideIcon } from 'lucide-react-native';
 import { render } from '@/lib/test-utils/render-with-providers';
+import { lightColors } from '@/theme/colors';
 import { IconButton } from '../index';
 
 /**
  * Mocks
  */
 
-const HeartIconMock = (() => (
-  <View testID="heart-icon-mock" />
+const HeartIconMock = (({ ...props }: Record<string, unknown>) => (
+  <View testID="heart-icon-mock" {...props} />
 )) as unknown as LucideIcon;
 const handlePressMock = jest.fn();
 
@@ -25,6 +26,26 @@ describe('IconButton', () => {
       <IconButton icon={HeartIconMock} onPress={handlePressMock} />
     );
     expect(view.getByTestId('heart-icon-mock')).toBeTruthy();
+  });
+
+  it('should apply the themed default color to the icon', async () => {
+    const view = await render(<IconButton icon={HeartIconMock} />);
+    expect(view.getByTestId('heart-icon-mock').props).toEqual(
+      expect.objectContaining({
+        color: lightColors.onSurface,
+        size: 24,
+        strokeWidth: 2,
+      })
+    );
+  });
+
+  it('should forward an explicit color to the icon', async () => {
+    const view = await render(
+      <IconButton icon={HeartIconMock} color={lightColors.destructive} />
+    );
+    expect(view.getByTestId('heart-icon-mock').props).toEqual(
+      expect.objectContaining({ color: lightColors.destructive })
+    );
   });
 
   it('should call onPress when pressed', async () => {

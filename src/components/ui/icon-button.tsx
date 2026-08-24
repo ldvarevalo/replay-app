@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'react';
-import { Pressable, View, type PressableProps } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { Pressable, type PressableProps } from 'react-native';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import type { LucideIcon } from 'lucide-react-native';
 
 /**
@@ -10,6 +10,7 @@ import type { LucideIcon } from 'lucide-react-native';
 export interface IconButtonProps extends Omit<PressableProps, 'children'> {
   icon: LucideIcon;
   size?: number;
+  color?: string;
 }
 
 /**
@@ -19,26 +20,33 @@ export interface IconButtonProps extends Omit<PressableProps, 'children'> {
 export const IconButton: FunctionComponent<IconButtonProps> = ({
   icon: Icon,
   size = 24,
+  color,
   disabled,
   style,
   ...props
-}) => (
-  <Pressable
-    disabled={disabled}
-    accessibilityRole="button"
-    accessibilityState={{ disabled: !!disabled }}
-    style={state => [
-      typeof style === 'function' ? style(state) : style,
-      state.pressed && styles.pressed,
-      disabled && styles.disabled,
-    ]}
-    {...props}
-  >
-    <View>
-      <Icon size={size} strokeWidth={2} />
-    </View>
-  </Pressable>
-);
+}) => {
+  const { theme } = useUnistyles();
+
+  return (
+    <Pressable
+      disabled={disabled}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: !!disabled }}
+      style={state => [
+        typeof style === 'function' ? style(state) : style,
+        state.pressed && styles.pressed,
+        disabled && styles.disabled,
+      ]}
+      {...props}
+    >
+      <Icon
+        size={size}
+        strokeWidth={2}
+        color={color ?? theme.colors.onSurface}
+      />
+    </Pressable>
+  );
+};
 
 /**
  * Styles
