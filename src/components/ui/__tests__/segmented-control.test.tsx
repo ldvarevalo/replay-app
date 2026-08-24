@@ -3,6 +3,7 @@ import type { RenderResult } from '@testing-library/react-native';
 import { render } from '@/lib/test-utils/render-with-providers';
 import { lightColors } from '@/theme/colors';
 import { radius } from '@/theme/radius';
+import { spacing } from '@/theme/spacing';
 import { SegmentedControl } from '../segmented-control';
 
 /**
@@ -29,6 +30,12 @@ type StyleEntry = Record<string, unknown>;
 
 const containerStyleOf = (view: RenderResult): StyleEntry =>
   view.getByTestId('segmented').props.style;
+
+const labelStyleAt = (
+  view: RenderResult,
+  label: string,
+  index: number
+): StyleEntry => view.getByText(label).props.style[index];
 
 /**
  * Tests
@@ -90,7 +97,7 @@ describe('SegmentedControl', () => {
     expect(tabs[2].props.accessibilityState).toMatchObject({ selected: false });
   });
 
-  it('should resolve container bg and radius from theme tokens', async () => {
+  it('should resolve container bg, radius, padding, and gap from theme tokens', async () => {
     const view = await render(
       <SegmentedControl
         testID="segmented"
@@ -102,6 +109,21 @@ describe('SegmentedControl', () => {
     expect(containerStyleOf(view)).toMatchObject({
       backgroundColor: lightColors.surface,
       borderRadius: radius.md,
+      padding: spacing.one,
+      gap: spacing.one,
+    });
+  });
+
+  it('should pin the selected label color to onPrimaryContainer for WCAG AA contrast', async () => {
+    const view = await render(
+      <SegmentedControl
+        options={OPTIONS}
+        value="want"
+        onChange={handleChangeMock}
+      />
+    );
+    expect(labelStyleAt(view, 'Want', 1)).toMatchObject({
+      color: lightColors.onPrimaryContainer,
     });
   });
 });

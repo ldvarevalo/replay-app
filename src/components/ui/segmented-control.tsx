@@ -50,7 +50,7 @@ export const SegmentedControl = <T extends string>({
         >
           <Text
             variant="label"
-            color={selected ? 'primary' : 'onSurfaceVariant'}
+            color={selected ? 'onPrimaryContainer' : 'onSurfaceVariant'}
           >
             {option.label}
           </Text>
@@ -69,8 +69,8 @@ const styles = StyleSheet.create(theme => ({
     flexDirection: 'row',
     backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.md,
-    padding: 4,
-    gap: 4,
+    padding: theme.spacing.one,
+    gap: theme.spacing.one,
   },
   segment: {
     flex: 1,
