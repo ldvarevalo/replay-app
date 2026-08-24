@@ -4,7 +4,7 @@ import {
   Pressable,
   type PressableProps,
 } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { Text } from './text';
 
 /**
@@ -50,10 +50,14 @@ export const Button: FunctionComponent<ButtonProps> = ({
   style,
   ...props
 }) => {
+  const { theme } = useUnistyles();
   styles.useVariants({ variant, ...(size === 'sm' && { size }) });
 
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ busy: loading, disabled: !!disabled }}
+      accessibilityLabel={typeof children === 'string' ? children : undefined}
       disabled={disabled || loading}
       style={state => [
         styles.button,
@@ -64,7 +68,7 @@ export const Button: FunctionComponent<ButtonProps> = ({
       {...props}
     >
       {loading ? (
-        <ActivityIndicator color="#ffffff" />
+        <ActivityIndicator color={theme.colors[TEXT_COLOR[variant]]} />
       ) : (
         <Text variant="label" color={TEXT_COLOR[variant]}>
           {children}

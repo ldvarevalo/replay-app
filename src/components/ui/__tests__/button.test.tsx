@@ -36,6 +36,15 @@ describe('Button', () => {
     expect(view.getByText('Save')).toBeTruthy();
   });
 
+  it('should expose button role and default accessibilityState', async () => {
+    const view = await render(<Button>Save</Button>);
+    expect(view.getByRole('button').props.accessibilityRole).toBe('button');
+    expect(view.getByRole('button').props.accessibilityState).toMatchObject({
+      busy: false,
+      disabled: false,
+    });
+  });
+
   it('should call onPress when pressed', async () => {
     const view = await render(<Button onPress={handlePressMock}>Save</Button>);
     fireEvent.press(view.getByText('Save'));
@@ -50,6 +59,9 @@ describe('Button', () => {
     );
     fireEvent.press(view.getByText('Save'));
     expect(handlePressMock).not.toHaveBeenCalled();
+    expect(view.getByRole('button').props.accessibilityState).toMatchObject({
+      disabled: true,
+    });
   });
 
   it('should accept variant=primary', async () => {
@@ -80,6 +92,10 @@ describe('Button', () => {
   it('should render ActivityIndicator when loading', async () => {
     const view = await render(<Button loading>Save</Button>);
     expect(view.queryByText('Save')).toBeNull();
+    expect(view.getByRole('button').props.accessibilityState).toMatchObject({
+      busy: true,
+      disabled: true,
+    });
   });
 
   it('should resolve base tokens from theme', async () => {
