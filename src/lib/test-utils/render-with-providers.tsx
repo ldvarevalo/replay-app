@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, type RenderOptions } from '@testing-library/react-native';
+import { render as renderNative, type RenderOptions } from '@testing-library/react-native';
 import { AuthProvider, type AuthAdapter } from '@/core/auth';
 import { createTestQueryClient } from '@/lib/react-query/query-client';
 import { setRepositories } from '@/repositories/instance';
@@ -22,10 +22,10 @@ interface Options extends Omit<RenderOptions, 'wrapper'> {
 }
 
 /**
- * renderWithProviders
+ * render
  */
 
-export const renderWithProviders = (
+export const render = (
   ui: ReactElement,
   options: Options = {}
 ) => {
@@ -47,5 +47,5 @@ export const renderWithProviders = (
     </QueryClientProvider>
   );
 
-  return render(ui, { wrapper, ...rest });
+  return renderNative(ui, { wrapper, ...rest });
 };
