@@ -1,8 +1,10 @@
 export { Button } from './button';
 export { Container } from './container';
+export { IconButton } from './icon-button';
 export { Screen } from './screen';
 export { Stack } from './stack';
 export { Text } from './text';
 export type { ButtonProps, ButtonSize, ButtonVariant } from './button';
+export type { IconButtonProps } from './icon-button';
 export type { StackProps } from './stack';
 export type { TextComponentProps, TextColor } from './text';
