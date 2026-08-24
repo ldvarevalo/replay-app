@@ -77,4 +77,11 @@ describe('Text', () => {
     );
     expect(view.getByText('Long text that should be truncated')).toBeTruthy();
   });
+
+  it('should map align prop to textAlign on the rendered Text', async () => {
+    const view = await render(<Text align="center">Centered</Text>);
+    expect(view.getByText('Centered').props.style).toContainEqual(
+      expect.objectContaining({ textAlign: 'center' })
+    );
+  });
 });

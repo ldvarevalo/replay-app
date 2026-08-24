@@ -18,6 +18,7 @@ export interface TextComponentProps extends TextProps {
   children?: ReactNode;
   variant?: TypographyVariant;
   color?: TextColor;
+  align?: 'left' | 'center' | 'right' | 'justify';
   numberOfLines?: number;
 }
 
@@ -31,6 +32,7 @@ export const Text: FunctionComponent<TextComponentProps> = ({
   children,
   variant = 'body',
   color = 'onSurface',
+  align,
   style,
   ...props
 }) => {
@@ -38,7 +40,12 @@ export const Text: FunctionComponent<TextComponentProps> = ({
 
   return (
     <RNText
-      style={[styles.base(variantTokens), styles.color(color), style]}
+      style={[
+        styles.base(variantTokens),
+        styles.color(color),
+        align ? { textAlign: align } : undefined,
+        style,
+      ]}
       {...props}
     >
       {children}
