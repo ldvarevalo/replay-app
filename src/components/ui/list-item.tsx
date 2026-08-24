@@ -17,8 +17,6 @@ export interface ListItemProps extends ViewProps {
  * ListItem
  */
 
-// ponytail: theme.colors.outlineVariant is not defined; using outline as the
-// separator color (Material 3 doesn't always expose outlineVariant in this token set).
 export const ListItem: FunctionComponent<ListItemProps> = ({
   title,
   description,
