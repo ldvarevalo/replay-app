@@ -92,4 +92,13 @@ describe('BottomNav', () => {
       paddingHorizontal: spacing.two,
     });
   });
+
+  it('should pin the active label color to onPrimaryContainer for WCAG AA contrast', async () => {
+    const view = await render(
+      <BottomNav activeTab="collection" onTabPress={handleTabPressMock} />
+    );
+    expect(view.getByText('Collection').props.style[1]).toMatchObject({
+      color: lightColors.onPrimaryContainer,
+    });
+  });
 });

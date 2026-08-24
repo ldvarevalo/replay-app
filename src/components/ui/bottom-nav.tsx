@@ -66,12 +66,14 @@ export const BottomNav: FunctionComponent<BottomNavProps> = ({
             ]}
           >
             <Icon
-              color={isActive ? colors.primary : colors.onSurfaceVariant}
+              color={
+                isActive ? colors.onPrimaryContainer : colors.onSurfaceVariant
+              }
               size={20}
             />
             <Text
               variant="label"
-              color={isActive ? 'primary' : 'onSurfaceVariant'}
+              color={isActive ? 'onPrimaryContainer' : 'onSurfaceVariant'}
             >
               {label}
             </Text>
