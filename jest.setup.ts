@@ -10,6 +10,20 @@ jest.mock('expo-secure-store', () => ({
 
 jest.mock('react-native-reanimated');
 
+jest.mock('lucide-react-native', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  const MockIcon = ({
+    children: _children,
+    ...props
+  }: Record<string, unknown>) =>
+    React.createElement(View, { testID: 'lucide-icon', ...props });
+  const handler: ProxyHandler<object> = {
+    get: (_target, prop: string) => MockIcon,
+  };
+  return new Proxy({}, handler);
+});
+
 jest.mock('expo-constants', () => ({
   expoConfig: {
     extra: {

@@ -11,6 +11,7 @@ export { SegmentedControl } from './segmented-control';
 export { Skeleton } from './skeleton';
 export { Stack } from './stack';
 export { Text } from './text';
+export { BottomNav } from './bottom-nav';
 export type { ButtonProps, ButtonSize, ButtonVariant } from './button';
 export type { CardProps } from './card';
 export type { EmptyStateProps } from './empty-state';
@@ -25,3 +26,4 @@ export type {
 export type { SkeletonProps } from './skeleton';
 export type { StackProps } from './stack';
 export type { TextComponentProps, TextColor } from './text';
+export type { BottomNavProps, TabId } from './bottom-nav';
