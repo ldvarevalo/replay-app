@@ -1,5 +1,36 @@
 import { render } from '@/lib/test-utils/render-with-providers';
+import type { RenderResult } from '@testing-library/react-native';
+import { lightColors } from '@/theme/colors';
+import {
+  typography,
+  typographyVariants,
+  type TypographyVariant,
+} from '@/theme/typography';
 import { Text } from '../text';
+
+/**
+ * Types
+ */
+
+type StyleEntry = Record<string, unknown>;
+
+/**
+ * Helpers
+ */
+
+const variantStyleOf = (variant: TypographyVariant): StyleEntry => ({
+  fontFamily: typography.family[typographyVariants[variant].family],
+  fontSize: typography.size[typographyVariants[variant].size],
+  fontWeight: typography.weight[typographyVariants[variant].weight],
+  letterSpacing:
+    typography.letterSpacing[typographyVariants[variant].letterSpacing],
+});
+
+const styleEntryAt = (
+  view: RenderResult,
+  text: string,
+  index: number
+): StyleEntry => view.getByText(text).props.style[index];
 
 /**
  * Tests
@@ -11,14 +42,26 @@ describe('Text', () => {
     expect(view.getByText('Hello')).toBeTruthy();
   });
 
-  it('should accept a variant prop without throwing', async () => {
-    const view = await render(<Text variant="display">Title</Text>);
-    expect(view.getByText('Title')).toBeTruthy();
+  it('should apply body variant tokens by default', async () => {
+    const view = await render(<Text>Hello</Text>);
+    expect(styleEntryAt(view, 'Hello', 0)).toMatchObject(
+      variantStyleOf('body')
+    );
   });
 
-  it('should accept a color override', async () => {
+  it('should accept a variant prop and map its tokens', async () => {
+    const view = await render(<Text variant="display">Title</Text>);
+    expect(view.getByText('Title')).toBeTruthy();
+    expect(styleEntryAt(view, 'Title', 0)).toMatchObject(
+      variantStyleOf('display')
+    );
+  });
+
+  it('should resolve a color override to theme colors', async () => {
     const view = await render(<Text color="onSurfaceVariant">Muted</Text>);
-    expect(view.getByText('Muted')).toBeTruthy();
+    expect(styleEntryAt(view, 'Muted', 1)).toMatchObject({
+      color: lightColors.onSurfaceVariant,
+    });
   });
 
   it('should support numberOfLines', async () => {

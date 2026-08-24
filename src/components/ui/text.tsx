@@ -32,14 +32,12 @@ export const Text: FunctionComponent<TextComponentProps> = ({
   variant = 'body',
   color = 'onSurface',
   style,
-  numberOfLines,
   ...props
 }) => {
   const variantTokens = typographyVariants[variant];
 
   return (
     <RNText
-      numberOfLines={numberOfLines}
       style={[styles.base(variantTokens), styles.color(color), style]}
       {...props}
     >
@@ -56,8 +54,7 @@ const styles = StyleSheet.create(theme => ({
   base: (variant: VariantTokens) => ({
     fontFamily: theme.typography.family[variant.family],
     fontSize: theme.typography.size[variant.size],
-    fontWeight: theme.typography.weight[variant.weight] as
-      '400' | '500' | '600' | '700',
+    fontWeight: theme.typography.weight[variant.weight],
     letterSpacing: theme.typography.letterSpacing[variant.letterSpacing],
   }),
   color: (color: TextColor) => ({
