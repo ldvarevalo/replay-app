@@ -22,8 +22,6 @@ type StyleEntry = Record<string, unknown>;
  * Helpers
  */
 
-// ponytail: RN TextInput has no implicit accessibilityRole, so getByRole('textbox')
-// does not match. Using testID for selector-based queries.
 const inputStyleAt = (view: RenderResult, index: number): StyleEntry =>
   view.getByTestId('input').props.style[index];
 
