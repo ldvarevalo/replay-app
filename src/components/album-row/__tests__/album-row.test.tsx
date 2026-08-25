@@ -57,4 +57,12 @@ describe('AlbumRow', () => {
     fireEvent.press(getByText('A Love Supreme'));
     expect(handleClickMock).toHaveBeenCalledTimes(1);
   });
+
+  it('should expose button role and title-by-artist label for a11y', async () => {
+    const { getByRole } = await render(<AlbumRow {...BASE_PROPS} />);
+    const pressable = getByRole('button');
+    expect(pressable.props.accessibilityLabel).toBe(
+      'A Love Supreme by John Coltrane'
+    );
+  });
 });

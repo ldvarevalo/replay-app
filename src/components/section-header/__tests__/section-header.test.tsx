@@ -50,4 +50,12 @@ describe('SectionHeader', () => {
     const { queryByText } = await render(<SectionHeader title="My Section" />);
     expect(queryByText('VIEW ALL')).toBeNull();
   });
+
+  it('should expose the link as a button with linkLabel as a11y label', async () => {
+    const { getByRole } = await render(
+      <SectionHeader title="My Section" onLinkClick={handleLinkClickMock} />
+    );
+    const link = getByRole('button');
+    expect(link.props.accessibilityLabel).toBe('VIEW ALL');
+  });
 });

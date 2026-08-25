@@ -23,11 +23,22 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({
   placeholder = 'Search archive...',
   ...props
 }) => (
-  <View style={styles.wrap}>
-    <View style={styles.icon}>
+  <View style={styles.wrap} testID="search-bar">
+    <View
+      style={styles.icon}
+      testID="search-bar-icon"
+      accessible={false}
+      accessibilityElementsHidden
+      importantForAccessibility="no"
+    >
       <Search size={16} />
     </View>
-    <Input placeholder={placeholder} {...props} />
+    <Input
+      placeholder={placeholder}
+      {...props}
+      testID="search-bar-input"
+      style={styles.inputPadding}
+    />
   </View>
 );
 
@@ -42,5 +53,8 @@ const styles = StyleSheet.create(theme => ({
     left: theme.spacing.two,
     zIndex: 1,
     pointerEvents: 'none',
+  },
+  inputPadding: {
+    paddingLeft: theme.spacing.five,
   },
 }));

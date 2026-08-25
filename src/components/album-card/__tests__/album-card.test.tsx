@@ -44,4 +44,28 @@ describe('AlbumCard', () => {
     fireEvent.press(getByText('A Love Supreme'));
     expect(handleClickMock).toHaveBeenCalledTimes(1);
   });
+
+  it('should expose button role and title-by-artist label for a11y', async () => {
+    const { getByRole } = await render(<AlbumCard {...BASE_PROPS} />);
+    const pressable = getByRole('button');
+    expect(pressable.props.accessibilityLabel).toBe(
+      'A Love Supreme by John Coltrane'
+    );
+  });
+
+  it('should render the listened Check icon when isListened=true', async () => {
+    const { getByTestId } = await render(
+      <AlbumCard {...BASE_PROPS} isListened />
+    );
+    expect(getByTestId('lucide-icon')).toBeTruthy();
+  });
+
+  it('should not render the listened Check icon when isListened is false or omitted', async () => {
+    const withFalse = await render(
+      <AlbumCard {...BASE_PROPS} isListened={false} />
+    );
+    expect(withFalse.queryByTestId('lucide-icon')).toBeNull();
+    const withOmitted = await render(<AlbumCard {...BASE_PROPS} />);
+    expect(withOmitted.queryByTestId('lucide-icon')).toBeNull();
+  });
 });

@@ -25,7 +25,12 @@ export const SectionHeader: FunctionComponent<SectionHeaderProps> = ({
   <View style={styles.wrap}>
     <Text variant="heading">{title}</Text>
     {onLinkClick && (
-      <Pressable onPress={onLinkClick} hitSlop={8}>
+      <Pressable
+        onPress={onLinkClick}
+        hitSlop={8}
+        accessibilityRole="button"
+        accessibilityLabel={linkLabel}
+      >
         <Text variant="label" color="onSurfaceVariant">
           {linkLabel}
         </Text>

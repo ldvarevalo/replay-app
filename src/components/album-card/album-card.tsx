@@ -31,10 +31,14 @@ export const AlbumCard: FunctionComponent<AlbumCardProps> = ({
   onClick,
 }) => {
   const { theme } = useUnistyles();
-  styles.useVariants({ isListened });
 
   return (
-    <Pressable onPress={onClick} style={styles.wrap}>
+    <Pressable
+      onPress={onClick}
+      accessibilityRole="button"
+      accessibilityLabel={`${title} by ${artist}`}
+      style={styles.wrap}
+    >
       <View style={styles.cover}>
         <Image
           source={{ uri: coverUrl }}
@@ -42,9 +46,11 @@ export const AlbumCard: FunctionComponent<AlbumCardProps> = ({
           accessibilityLabel={title}
           contentFit="cover"
         />
-        <View style={styles.badge}>
-          <Check size={12} color={theme.colors.tertiary} />
-        </View>
+        {isListened && (
+          <View style={styles.badge}>
+            <Check size={12} color={theme.colors.tertiary} />
+          </View>
+        )}
       </View>
       <Text variant="heading" numberOfLines={1}>
         {title}
@@ -85,11 +91,5 @@ const styles = StyleSheet.create(theme => ({
     backgroundColor: `${theme.colors.tertiary}33`,
     alignItems: 'center',
     justifyContent: 'center',
-    variants: {
-      isListened: {
-        true: { display: 'flex' },
-        false: { display: 'none' },
-      },
-    },
   },
 }));

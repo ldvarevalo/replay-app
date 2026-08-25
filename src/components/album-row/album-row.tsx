@@ -38,6 +38,8 @@ export const AlbumRow: FunctionComponent<AlbumRowProps> = ({
   return (
     <Pressable
       onPress={onClick}
+      accessibilityRole="button"
+      accessibilityLabel={`${title} by ${artist}`}
       style={({ pressed }) => [styles.row, pressed && styles.pressed]}
     >
       <Image
