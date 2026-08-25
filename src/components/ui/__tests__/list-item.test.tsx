@@ -23,7 +23,6 @@ type StyleEntry = Record<string, unknown>;
 const variantStyleOf = (variant: TypographyVariant): StyleEntry => ({
   fontFamily: typography.family[typographyVariants[variant].family],
   fontSize: typography.size[typographyVariants[variant].size],
-  fontWeight: typography.weight[typographyVariants[variant].weight],
   letterSpacing:
     typography.letterSpacing[typographyVariants[variant].letterSpacing],
 });

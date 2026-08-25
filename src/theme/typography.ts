@@ -54,50 +54,42 @@ export const typographyVariants: Record<
   {
     family: keyof typeof typography.family;
     size: keyof typeof typography.size;
-    weight: keyof typeof typography.weight;
     letterSpacing: keyof typeof typography.letterSpacing;
   }
 > = {
   display: {
     family: 'headingBold',
     size: '2xl',
-    weight: 'bold',
     letterSpacing: 'tight',
   },
   title: {
     family: 'headingSemibold',
     size: 'xl',
-    weight: 'semibold',
     letterSpacing: 'tight',
   },
   heading: {
     family: 'headingSemibold',
     size: 'md',
-    weight: 'semibold',
     letterSpacing: 'normal',
   },
   body: {
     family: 'sans',
     size: 'sm',
-    weight: 'normal',
     letterSpacing: 'normal',
   },
   label: {
     family: 'sansMedium',
     size: '2xs',
-    weight: 'medium',
     letterSpacing: 'wider',
   },
   caption: {
     family: 'sans',
     size: 'xs',
-    weight: 'normal',
     letterSpacing: 'normal',
   },
   navLink: {
     family: 'sansMedium',
     size: '2xs',
-    weight: 'medium',
     letterSpacing: 'wider',
   },
 };

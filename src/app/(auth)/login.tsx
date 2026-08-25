@@ -1,11 +1,12 @@
-import { useState, type FunctionComponent } from 'react';
-import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Screen } from '@/components/ui/screen';
 import { Stack } from '@/components/ui/stack';
 import { Text } from '@/components/ui/text';
 import { useAuth } from '@/core/auth';
+import { router, useLocalSearchParams, type Href } from 'expo-router';
+import { useState, type FunctionComponent } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 /**
  * Helpers
@@ -44,8 +45,12 @@ const Login: FunctionComponent = () => {
 
   return (
     <Screen>
-      <Stack gap="three" style={{ paddingHorizontal: 16, paddingTop: 64 }}>
-        <Text variant="display">Replay</Text>
+      <Stack style={styles.titleArea}>
+        <Text variant="display" align="center">
+          Replay
+        </Text>
+      </Stack>
+      <Stack gap="three" style={styles.formArea}>
         <Input
           placeholder="Email"
           value={email}
@@ -84,3 +89,18 @@ const Login: FunctionComponent = () => {
 };
 
 export default Login;
+
+/**
+ * Styles
+ */
+
+const styles = StyleSheet.create(() => ({
+  titleArea: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  formArea: {
+    paddingHorizontal: 16,
+    paddingBottom: 120,
+  },
+}));

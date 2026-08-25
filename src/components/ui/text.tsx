@@ -61,7 +61,6 @@ const styles = StyleSheet.create(theme => ({
   base: (variant: VariantTokens) => ({
     fontFamily: theme.typography.family[variant.family],
     fontSize: theme.typography.size[variant.size],
-    fontWeight: theme.typography.weight[variant.weight],
     letterSpacing: theme.typography.letterSpacing[variant.letterSpacing],
   }),
   color: (color: TextColor) => ({
