@@ -1,3 +1,4 @@
+import '@/theme';
 import { Stack, usePathname, useRouter } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

@@ -1,3 +1,4 @@
+import '@/theme';
 import { Stack } from 'expo-router';
 
 /**
