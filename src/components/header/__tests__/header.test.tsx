@@ -61,6 +61,18 @@ describe('Header', () => {
     expect(handleRightPressMock).toHaveBeenCalledTimes(1);
   });
 
+  it('should forward rightAccessibilityLabel to the right icon button', async () => {
+    const { getByLabelText } = await render(
+      <Header
+        title="Album"
+        rightIcon={Plus}
+        onRightPress={handleRightPressMock}
+        rightAccessibilityLabel="Add album"
+      />
+    );
+    expect(getByLabelText('Add album')).toBeTruthy();
+  });
+
   it('should expose header role for accessibility', async () => {
     const { getByRole } = await render(<Header title="Replay" />);
     expect(getByRole('header')).toBeTruthy();

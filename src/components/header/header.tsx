@@ -41,7 +41,7 @@ export const Header: FunctionComponent<HeaderProps> = ({
           size={20}
         />
       )}
-      <Stack gap="half" style={styles.titleStack}>
+      <Stack gap="one" style={styles.titleStack}>
         <Text variant="title">{title}</Text>
         {subtitle && (
           <Text variant="body" color="onSurfaceVariant">
@@ -54,7 +54,7 @@ export const Header: FunctionComponent<HeaderProps> = ({
       <IconButton
         icon={rightIcon}
         onPress={onRightPress}
-        accessibilityLabel={rightAccessibilityLabel ?? 'Action'}
+        accessibilityLabel={rightAccessibilityLabel}
         size={20}
       />
     )}
