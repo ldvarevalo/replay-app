@@ -61,7 +61,15 @@ const Login: FunctionComponent = () => {
           secureTextEntry
           testID="password-input"
         />
-        {error && <Text color="destructive">{error}</Text>}
+        {error && (
+          <Text
+            color="destructive"
+            accessibilityRole="alert"
+            accessibilityLiveRegion="polite"
+          >
+            {error}
+          </Text>
+        )}
         <Button
           variant="primary"
           onPress={handleSubmit}

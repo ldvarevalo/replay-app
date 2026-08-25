@@ -2,10 +2,20 @@ import { fireEvent, waitFor } from '@testing-library/react-native';
 import { render } from '@/lib/test-utils/render-with-providers';
 import Login from '../login';
 
+/**
+ * Mocks
+ */
+
 jest.mock('expo-router', () => ({
   router: { replace: jest.fn() },
   useLocalSearchParams: () => ({}),
 }));
+
+const handleSignInMock = jest.fn();
+
+/**
+ * Tests
+ */
 
 describe('Login', () => {
   afterEach(() => jest.clearAllMocks());
@@ -32,9 +42,7 @@ describe('Login', () => {
   });
 
   it('should call signIn with email and password on submit', async () => {
-    const handleSignInMock = jest
-      .fn()
-      .mockResolvedValue({ user: null, accessToken: null });
+    handleSignInMock.mockResolvedValue({ user: null, accessToken: null });
     const view = await render(<Login />, {
       adapter: { signIn: handleSignInMock },
     });
@@ -54,7 +62,7 @@ describe('Login', () => {
       user: null;
       accessToken: null;
     }) => void = () => {};
-    const handleSignInMock = jest.fn().mockImplementation(
+    handleSignInMock.mockImplementation(
       () =>
         new Promise(resolve => {
           resolveSignIn = resolve;
@@ -74,12 +82,11 @@ describe('Login', () => {
     await waitFor(() => expect(view.queryByText('Sign in')).toBeNull());
     // Release the pending signIn so the test's async chain can settle.
     resolveSignIn({ user: null, accessToken: null });
+    await waitFor(() => expect(view.getByText('Sign in')).toBeTruthy());
   });
 
   it('should display error from signIn when it fails', async () => {
-    const handleSignInMock = jest
-      .fn()
-      .mockRejectedValue(new Error('Invalid credentials'));
+    handleSignInMock.mockRejectedValue(new Error('Invalid credentials'));
     const view = await render(<Login />, {
       adapter: { signIn: handleSignInMock },
     });
@@ -92,5 +99,24 @@ describe('Login', () => {
     await waitFor(() =>
       expect(view.getByText('Invalid credentials')).toBeTruthy()
     );
+    await waitFor(() => expect(view.getByText('Sign in')).toBeTruthy());
+  });
+
+  it('should announce the error to assistive tech', async () => {
+    handleSignInMock.mockRejectedValue(new Error('Invalid credentials'));
+    const view = await render(<Login />, {
+      adapter: { signIn: handleSignInMock },
+    });
+    await waitFor(() =>
+      expect(view.getByPlaceholderText('Email')).toBeTruthy()
+    );
+    await fireEvent.changeText(view.getByPlaceholderText('Email'), 'a@b.c');
+    await fireEvent.changeText(view.getByPlaceholderText('Password'), 'pw');
+    await fireEvent.press(view.getByText('Sign in'));
+    const errorNode = await waitFor(() =>
+      view.getByText('Invalid credentials')
+    );
+    expect(errorNode.props.accessibilityRole).toBe('alert');
+    expect(errorNode.props.accessibilityLiveRegion).toBe('polite');
   });
 });
