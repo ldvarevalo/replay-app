@@ -1,3 +1,4 @@
+import '@/theme';
 import { QueryClientProvider } from '@tanstack/react-query';
 import * as SplashScreen from 'expo-splash-screen';
 import { Redirect, Stack, usePathname } from 'expo-router';
