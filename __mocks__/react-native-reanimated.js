@@ -1,4 +1,4 @@
-// ponytail: hand-rolled Reanimated 4 mock — the bundled mock.js pulls in
+// hand-rolled Reanimated 4 mock — the bundled mock.js pulls in
 // worklets initializers that hit the native module in jest. This stub
 // covers only the surface the app uses (Skeleton today; extend as needed).
 const {
