@@ -21,15 +21,10 @@ const targetFor = (redirect: string | undefined): Href =>
 
 const Login: FunctionComponent = () => {
   const { redirect } = useLocalSearchParams<{ redirect?: string }>();
-  const { signIn, error, user } = useAuth();
+  const { signIn, error } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
-
-  if (user) {
-    router.replace(targetFor(redirect));
-    return null;
-  }
 
   const handleSubmit = async (): Promise<void> => {
     setSubmitting(true);
