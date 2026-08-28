@@ -51,9 +51,7 @@ export default function AppLayout() {
       </View>
       <BottomNav
         activeTab={activeTab}
-        onTabPress={tab =>
-          router.push(TAB_TO_PATH[tab] as Parameters<typeof router.push>[0])
-        }
+        onTabPress={tab => router.navigate(TAB_TO_PATH[tab])}
       />
     </View>
   );
