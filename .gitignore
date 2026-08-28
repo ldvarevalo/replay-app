@@ -44,5 +44,9 @@ example
 /ios
 /android
 
+# ci build artifacts
+release-notes.md
+firebase-service-account.json
+
 # local specs and plans (never committed)
 /docs/superpowers/
