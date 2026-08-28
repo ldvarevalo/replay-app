@@ -108,7 +108,7 @@ jobs:
       - name: Build Android preview
         id: eas-build
         run: |
-          yarn eas build \
+          yarn --silent eas build \
             --platform android \
             --profile preview \
             --non-interactive \
