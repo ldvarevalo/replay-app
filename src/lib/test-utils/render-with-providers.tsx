@@ -1,6 +1,10 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, type RenderOptions } from '@testing-library/react-native';
+import {
+  render as renderNative,
+  type RenderOptions,
+  type RenderResult,
+} from '@testing-library/react-native';
 import { AuthProvider, type AuthAdapter } from '@/core/auth';
 import { createTestQueryClient } from '@/lib/react-query/query-client';
 import { setRepositories } from '@/repositories/instance';
@@ -17,35 +21,57 @@ type RepositoryOverrides = {
 
 interface Options extends Omit<RenderOptions, 'wrapper'> {
   repositories?: RepositoryOverrides;
-  adapter?: AuthAdapter;
+  adapter?: Partial<AuthAdapter>;
   queryClient?: QueryClient;
 }
 
+interface RenderResultWithProviders extends RenderResult {
+  adapter: AuthAdapter;
+}
+
 /**
- * renderWithProviders
+ * Helpers
  */
 
-export const renderWithProviders = (
+const createDefaultAuthAdapter = (): AuthAdapter => ({
+  signIn: jest.fn().mockResolvedValue({ user: null, accessToken: null }),
+  signOut: jest.fn().mockResolvedValue(undefined),
+  getSession: jest.fn().mockResolvedValue({ user: null, accessToken: null }),
+  getUser: jest.fn().mockResolvedValue(null),
+  onAuthStateChange: jest.fn().mockReturnValue(() => {}),
+});
+
+const mergeAdapter = (
+  defaults: AuthAdapter,
+  override: Partial<AuthAdapter> | undefined
+): AuthAdapter => ({
+  signIn: override?.signIn ?? defaults.signIn,
+  signOut: override?.signOut ?? defaults.signOut,
+  getSession: override?.getSession ?? defaults.getSession,
+  getUser: override?.getUser ?? defaults.getUser,
+  onAuthStateChange: override?.onAuthStateChange ?? defaults.onAuthStateChange,
+});
+
+/**
+ * render
+ */
+
+export const render = async (
   ui: ReactElement,
   options: Options = {}
-) => {
+): Promise<RenderResultWithProviders> => {
   const { repositories, adapter, queryClient, ...rest } = options;
   const client = queryClient ?? createTestQueryClient();
   setRepositories(createTestRepositories(repositories));
 
-  const stubAdapter: AuthAdapter = adapter ?? {
-    signIn: jest.fn().mockResolvedValue({ user: null, accessToken: null }),
-    signOut: jest.fn().mockResolvedValue(undefined),
-    getSession: jest.fn().mockResolvedValue({ user: null, accessToken: null }),
-    getUser: jest.fn().mockResolvedValue(null),
-    onAuthStateChange: jest.fn().mockReturnValue(() => {}),
-  };
+  const resolvedAdapter = mergeAdapter(createDefaultAuthAdapter(), adapter);
 
-  const wrapper = ({ children }: { children: ReactNode }) => (
+  const wrapped: ReactElement = (
     <QueryClientProvider client={client}>
-      <AuthProvider adapter={stubAdapter}>{children}</AuthProvider>
+      <AuthProvider adapter={resolvedAdapter}>{ui}</AuthProvider>
     </QueryClientProvider>
   );
 
-  return render(ui, { wrapper, ...rest });
+  const result = await renderNative(wrapped, rest);
+  return Object.assign(result, { adapter: resolvedAdapter });
 };

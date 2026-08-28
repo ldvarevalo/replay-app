@@ -76,7 +76,7 @@ This app is being ported 1:1 from the web app at `../frontend-crate/`. Conventio
 - **React components:** tipar con `FunctionComponent<Props>`. Destructurar sin anotación inline. Ej: `export const HintRow: FunctionComponent<HintRowProps> = ({title, hint}) => ...`. NO `({title, hint}: HintRowProps) => ...`. Hooks NO se tipean como FC — solo componentes.
 - **Preferir `interface` sobre `type`:** `interface` para object shapes (intersections via `extends`). `type` reservado para unions, mapped types (`{[K in keyof T]: ...}`), function types y derivaciones con `keyof`/`typeof`.
 - **Sufijo `Response` + snake_case solo en responses:** las interfaces que tipan un response de Supabase/API llevan sufijo `Response` (ej. `UserAnalyticsResponse`) y son las **únicas** con campos en `snake_case`. Todos los demás types (domain types, props, helpers) usan `camelCase`. Los repos convierten snake_case → camelCase en el borde (map functions).
-- **Orden de secciones en archivos:** `Types → Constants → Helpers → named export`. Cada sección se separa con JSDoc `/** SectionName */`. Si Types/Constants están interleaved, reagrupar (todos los types primero) sin duplicar headers. Cada named export lleva su propio header (`/** useAuth */`, `/** HintRow */`). Imports siempre fuera de los section separators.
+- **Orden de secciones en archivos:** `Types → Constants → Helpers → named export → Styles`. Cada sección se separa con JSDoc `/** SectionName */`. Si Types/Constants están interleaved, reagrupar (todos los types primero) sin duplicar headers. Cada named export lleva su propio header (`/** useAuth */`, `/** HintRow */`). Styles al final del archivo (`/** Styles */` con `StyleSheet.create`). Imports siempre fuera de los section separators.
 - **Arrow functions:** enforced por ESLint (`func-style: ['error', 'expression', { allowArrowFunctions: true }]` + `prefer-arrow-callback`). `export default function` se tolera (la regla no lo flagea).
 
 ## Landmines (read before touching tooling)
@@ -92,7 +92,7 @@ This app is being ported 1:1 from the web app at `../frontend-crate/`. Conventio
 ## Testing
 
 - `yarn test` — 22 tests across 6 suites (query-client, supabase storage, authStore, auth-context, releases, music-search)
-- **Test conventions:** `it` always starts with `"should ..."`; `/** Mocks */` then `/** Tests */` JSDoc sections; mock callbacks named `handle<Verb><Noun>Mock`; test data in `UPPER_SNAKE_CASE` with `_MOCK` suffix, dotted convention (`A.RELEASE.ID`).
+- **Test conventions:** `it` always starts with `"should ..."`; `/** Mocks */` then `/** Tests */` JSDoc sections; mock callbacks named `handle<Verb><Noun>Mock`; test data in `UPPER_SNAKE_CASE` with `_MOCK` suffix, dotted convention (`A.RELEASE.ID`). Mock props objects use `COMPONENT_NAME_PROPS_MOCK` (ej. `ALBUM_HERO_PROPS_MOCK`, `ALBUM_CARD_PROPS_MOCK`).
 - **No `beforeEach` in tests** — `jest.setup.ts` does `setRepositories(createTestRepositories())` globally. Only `afterEach(clearAllMocks)` when needed.
 - **Per-repo noop factory:** `createTestRepositories({ releases: { findById: jest.fn().mockResolvedValue(...) } })` for partial overrides.
 - **Test framework is jest-expo, not vitest** (web uses vitest — different stack, not a violation).
