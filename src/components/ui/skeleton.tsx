@@ -3,6 +3,7 @@ import type { ViewProps } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import Animated, {
   Easing,
+  useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withTiming,
@@ -39,10 +40,17 @@ export const Skeleton: FunctionComponent<SkeletonProps> = ({
     );
   }, [opacity]);
 
+  const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
+
   return (
     <Animated.View
       {...props}
-      style={[styles.skeleton, { width, height, borderRadius }, style]}
+      style={[
+        styles.skeleton,
+        animatedStyle,
+        { width, height, borderRadius },
+        style,
+      ]}
     />
   );
 };
