@@ -8,7 +8,7 @@ import { AlbumRow } from '../album-row';
  */
 
 const handleClickMock = jest.fn();
-const BASE_PROPS = {
+const ALBUM_ROW_PROPS_MOCK = {
   thumbnail: 'https://example.com/thumb.jpg',
   title: 'A Love Supreme',
   artist: 'John Coltrane',
@@ -24,18 +24,18 @@ describe('AlbumRow', () => {
 
   it('should render title, artist and thumbnail', async () => {
     const { getByText, getByLabelText } = await render(
-      <AlbumRow {...BASE_PROPS} />
+      <AlbumRow {...ALBUM_ROW_PROPS_MOCK} />
     );
     expect(getByText('A Love Supreme')).toBeTruthy();
     expect(getByText('John Coltrane')).toBeTruthy();
     expect(getByLabelText('A Love Supreme').props.source).toEqual([
-      { uri: BASE_PROPS.thumbnail },
+      { uri: ALBUM_ROW_PROPS_MOCK.thumbnail },
     ]);
   });
 
   it('should render duration when provided', async () => {
     const { getByText } = await render(
-      <AlbumRow {...BASE_PROPS} duration="5:30" />
+      <AlbumRow {...ALBUM_ROW_PROPS_MOCK} duration="5:30" />
     );
     expect(getByText('5:30')).toBeTruthy();
   });
@@ -43,7 +43,7 @@ describe('AlbumRow', () => {
   it('should render actionIcon instead of duration when provided', async () => {
     const { getByTestId, queryByText } = await render(
       <AlbumRow
-        {...BASE_PROPS}
+        {...ALBUM_ROW_PROPS_MOCK}
         duration="5:30"
         actionIcon={<Text testID="action">+</Text>}
       />
@@ -53,13 +53,13 @@ describe('AlbumRow', () => {
   });
 
   it('should call onClick when pressed', async () => {
-    const { getByText } = await render(<AlbumRow {...BASE_PROPS} />);
+    const { getByText } = await render(<AlbumRow {...ALBUM_ROW_PROPS_MOCK} />);
     fireEvent.press(getByText('A Love Supreme'));
     expect(handleClickMock).toHaveBeenCalledTimes(1);
   });
 
   it('should expose button role and title-by-artist label for a11y', async () => {
-    const { getByRole } = await render(<AlbumRow {...BASE_PROPS} />);
+    const { getByRole } = await render(<AlbumRow {...ALBUM_ROW_PROPS_MOCK} />);
     const pressable = getByRole('button');
     expect(pressable.props.accessibilityLabel).toBe(
       'A Love Supreme by John Coltrane'
