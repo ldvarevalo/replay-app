@@ -5,24 +5,27 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomNav, type TabId } from '@/components/ui/bottom-nav';
 
 /**
+ * Types
+ */
+
+type TabPath = '/inicio' | '/collection' | '/release/add' | '/analytics';
+
+/**
  * Constants
  */
 
-const PATH_TO_TAB: Record<string, TabId> = {
-  '/inicio': 'home',
-  '/collection': 'collection',
-  '/release/add': 'add',
-  '/analytics': 'analytics',
-};
-
-const TAB_TO_PATH: Record<
-  TabId,
-  '/inicio' | '/collection' | '/release/add' | '/analytics'
-> = {
+const TAB_TO_PATH: Record<TabId, TabPath> = {
   home: '/inicio',
   collection: '/collection',
   add: '/release/add',
   analytics: '/analytics',
+};
+
+const PATH_TO_TAB: Record<TabPath, TabId> = {
+  '/inicio': 'home',
+  '/collection': 'collection',
+  '/release/add': 'add',
+  '/analytics': 'analytics',
 };
 
 /**
