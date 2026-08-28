@@ -6,11 +6,6 @@ import Login from '../login';
  * Mocks
  */
 
-jest.mock('expo-router', () => ({
-  router: { replace: jest.fn() },
-  useLocalSearchParams: () => ({}),
-}));
-
 const handleSignInMock = jest.fn();
 
 /**
