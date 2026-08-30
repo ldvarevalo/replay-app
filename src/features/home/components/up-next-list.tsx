@@ -11,7 +11,7 @@ import type { Album } from '@/types/domain';
  */
 
 export interface UpNextListProps {
-  albums: ReadonlyArray<Album>;
+  albums: readonly Album[];
   onAlbumClick: (album: Album) => void;
 }
 

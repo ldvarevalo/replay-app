@@ -73,11 +73,7 @@ export const HomeScreen: FunctionComponent = () => {
         />
 
         <SectionHeader title="Recently Listened" />
-        <Stack
-          direction="row"
-          gap="two"
-          style={styles.recentGrid}
-        >
+        <Stack direction="row" gap="two" style={styles.recentGrid}>
           {albums.map(album => (
             <View key={album.id} style={styles.recentCell}>
               <RecentlyListenedCard

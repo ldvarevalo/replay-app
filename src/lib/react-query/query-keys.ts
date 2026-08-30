@@ -12,12 +12,10 @@ import type { QueryKey } from '@tanstack/react-query';
 
 export const homeQueryKeys = {
   all: ['home'] as const,
-  stats: (userId: string) =>
-    [...homeQueryKeys.all, 'stats', userId] as const,
+  stats: (userId: string) => [...homeQueryKeys.all, 'stats', userId] as const,
   dailyPick: (userId: string, offset: number) =>
     [...homeQueryKeys.all, 'daily-pick', userId, offset] as const,
-  recent: (userId: string) =>
-    [...homeQueryKeys.all, 'recent', userId] as const,
+  recent: (userId: string) => [...homeQueryKeys.all, 'recent', userId] as const,
   rediscover: (userId: string) =>
     [...homeQueryKeys.all, 'rediscover', userId] as const,
   upNext: (userId: string) =>

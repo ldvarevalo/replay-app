@@ -7,7 +7,7 @@ import { UpNextList } from '../up-next-list';
  */
 
 const handleAlbumClickMock = jest.fn();
-const MOCK_ALBUMS: ReadonlyArray<Album> = [
+const MOCK_ALBUMS: readonly Album[] = [
   {
     id: 'A.ALBUM.ONE',
     coverUrl: '',
@@ -39,7 +39,7 @@ describe('UpNextList', () => {
 
   it('should render all albums', async () => {
     const view = await render(
-      <UpNextList albums={MOCK_ALBUMS} onAlbumClick={handleAlbumClickMock} />,
+      <UpNextList albums={MOCK_ALBUMS} onAlbumClick={handleAlbumClickMock} />
     );
 
     expect(view.getByText('AN.ALBUM.TITLE')).toBeTruthy();
@@ -49,7 +49,7 @@ describe('UpNextList', () => {
 
   it('should fire onAlbumClick with the clicked album', async () => {
     const view = await render(
-      <UpNextList albums={MOCK_ALBUMS} onAlbumClick={handleAlbumClickMock} />,
+      <UpNextList albums={MOCK_ALBUMS} onAlbumClick={handleAlbumClickMock} />
     );
 
     fireEvent.press(view.getByText('ANOTHER.ALBUM'));

@@ -31,7 +31,7 @@ describe('DailyPickCard', () => {
         album={MOCK_ALBUM}
         onListenToday={handleListenTodayMock}
         onShowAnother={handleShowAnotherMock}
-      />,
+      />
     );
 
     expect(view.getByText("Today's Pick")).toBeTruthy();
@@ -48,7 +48,7 @@ describe('DailyPickCard', () => {
         album={MOCK_ALBUM}
         onListenToday={handleListenTodayMock}
         onShowAnother={handleShowAnotherMock}
-      />,
+      />
     );
 
     fireEvent.press(view.getByText('Listen today'));
@@ -61,7 +61,7 @@ describe('DailyPickCard', () => {
         album={MOCK_ALBUM}
         onListenToday={handleListenTodayMock}
         onShowAnother={handleShowAnotherMock}
-      />,
+      />
     );
 
     fireEvent.press(view.getByText('Show another'));

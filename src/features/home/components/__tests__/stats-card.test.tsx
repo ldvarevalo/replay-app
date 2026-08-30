@@ -8,7 +8,7 @@ import { StatsCard } from '../stats-card';
 describe('StatsCard', () => {
   it('should render collection count and listening hours', async () => {
     const view = await render(
-      <StatsCard collectionCount={1200} listeningHours={8} />,
+      <StatsCard collectionCount={1200} listeningHours={8} />
     );
 
     expect(view.getByText('1,200 albums')).toBeTruthy();

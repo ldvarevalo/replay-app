@@ -24,7 +24,7 @@ describe('RediscoverCard', () => {
 
   it('should render album title and artist', async () => {
     const view = await render(
-      <RediscoverCard {...REDISCOVER_CARD_PROPS_MOCK} />,
+      <RediscoverCard {...REDISCOVER_CARD_PROPS_MOCK} />
     );
 
     expect(view.getByText('AN.OLD.ALBUM')).toBeTruthy();
@@ -33,7 +33,7 @@ describe('RediscoverCard', () => {
 
   it('should fire onClick when pressed', async () => {
     const view = await render(
-      <RediscoverCard {...REDISCOVER_CARD_PROPS_MOCK} />,
+      <RediscoverCard {...REDISCOVER_CARD_PROPS_MOCK} />
     );
 
     fireEvent.press(view.getByRole('button'));

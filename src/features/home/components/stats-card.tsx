@@ -25,9 +25,7 @@ export const StatsCard: FunctionComponent<StatsCardProps> = ({
       <Text variant="label" style={styles.eyebrow}>
         Collection
       </Text>
-      <Text variant="title">
-        {collectionCount.toLocaleString()} albums
-      </Text>
+      <Text variant="title">{collectionCount.toLocaleString()} albums</Text>
     </View>
     <View style={styles.column}>
       <Text variant="label" style={styles.eyebrow}>

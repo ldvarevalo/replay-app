@@ -31,7 +31,7 @@ export const DailyPickCard: FunctionComponent<DailyPickCardProps> = ({
     <Stack direction="row" gap="five" style={styles.top}>
       <View style={styles.text}>
         <Text variant="label" color="onSurfaceVariant">
-          Today's Pick
+          Today&apos;s Pick
         </Text>
         <Stack direction="column" gap="one" style={styles.meta}>
           <Text variant="heading">{album.title}</Text>

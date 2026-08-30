@@ -19,6 +19,12 @@ const RECENT_ALBUMS_LIMIT = 4;
 const UP_NEXT_LIMIT = 6;
 
 /**
+ * Helpers
+ */
+
+const or = <T>(value: T | undefined, fallback: T): T => value ?? fallback;
+
+/**
  * useHomeData
  */
 
@@ -64,12 +70,12 @@ export const useHomeData = (): HomeData => {
   }, []);
 
   return {
-    stats: statsData ?? EMPTY_STATS,
-    dailyPick: dailyPick ?? null,
-    albums: albumsData ?? [],
-    rediscover: rediscover ?? null,
-    upNext: upNextData ?? [],
-    wantToBuyCount: statsData?.wantToBuy ?? 0,
+    stats: or(statsData, EMPTY_STATS),
+    dailyPick: or(dailyPick, null),
+    albums: or(albumsData, []),
+    rediscover: or(rediscover, null),
+    upNext: or(upNextData, []),
+    wantToBuyCount: or(statsData?.wantToBuy, 0),
     handleShowAnother,
   };
 };

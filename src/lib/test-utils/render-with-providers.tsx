@@ -1,8 +1,5 @@
 import type { ReactElement, ReactNode } from 'react';
-import {
-  QueryClientProvider,
-  type QueryClient,
-} from '@tanstack/react-query';
+import { QueryClientProvider, type QueryClient } from '@tanstack/react-query';
 import {
   fireEvent,
   render as renderNative,
@@ -16,7 +13,6 @@ import {
 import { AuthProvider, type AuthAdapter } from '@/core/auth';
 import { createTestQueryClient } from '@/lib/react-query/query-client';
 import { setRepositories } from '@/repositories/instance';
-import type { Repositories } from '@/repositories/types';
 import {
   createTestRepositories,
   type RepositoryOverrides,
@@ -26,8 +22,10 @@ import {
  * Types
  */
 
-export interface RenderHookOptions
-  extends Omit<RNTLRenderHookOptions<unknown>, 'wrapper'> {
+export interface RenderHookOptions extends Omit<
+  RNTLRenderHookOptions<unknown>,
+  'wrapper'
+> {
   queryClient?: QueryClient;
   repositories?: RepositoryOverrides;
   adapter?: Partial<AuthAdapter>;
@@ -57,8 +55,7 @@ const mergeAdapter = (
   signOut: override?.signOut ?? defaults.signOut,
   getSession: override?.getSession ?? defaults.getSession,
   getUser: override?.getUser ?? defaults.getUser,
-  onAuthStateChange:
-    override?.onAuthStateChange ?? defaults.onAuthStateChange,
+  onAuthStateChange: override?.onAuthStateChange ?? defaults.onAuthStateChange,
 });
 
 /**

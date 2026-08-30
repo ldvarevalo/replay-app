@@ -22,24 +22,21 @@ export interface RecentlyListenedCardProps {
 
 const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
-const INTERVALS: ReadonlyArray<readonly [number, Intl.RelativeTimeFormatUnit]> =
-  [
-    [31_536_000, 'year'],
-    [2_592_000, 'month'],
-    [604_800, 'week'],
-    [86_400, 'day'],
-    [3_600, 'hour'],
-    [60, 'minute'],
-  ];
+const INTERVALS: readonly (readonly [number, Intl.RelativeTimeFormatUnit])[] = [
+  [31_536_000, 'year'],
+  [2_592_000, 'month'],
+  [604_800, 'week'],
+  [86_400, 'day'],
+  [3_600, 'hour'],
+  [60, 'minute'],
+];
 
 /**
  * Helpers
  */
 
 const formatRelativeTime = (isoDate: string): string => {
-  const seconds = Math.floor(
-    (Date.now() - new Date(isoDate).getTime()) / 1000
-  );
+  const seconds = Math.floor((Date.now() - new Date(isoDate).getTime()) / 1000);
   const match = INTERVALS.find(([s]) => seconds >= s);
   const [unitSeconds, unit] = match ?? [60, 'minute'];
   const value = Math.floor(seconds / unitSeconds);

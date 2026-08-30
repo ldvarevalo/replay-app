@@ -20,11 +20,7 @@ export const BannerCta: FunctionComponent<BannerCtaProps> = ({
   count,
   onClick,
 }) => (
-  <Pressable
-    onPress={onClick}
-    accessibilityRole="button"
-    style={styles.wrap}
-  >
+  <Pressable onPress={onClick} accessibilityRole="button" style={styles.wrap}>
     <View style={styles.textColumn}>
       <Text variant="label" color="onPrimaryContainer" style={styles.eyebrow}>
         WHISHLIST

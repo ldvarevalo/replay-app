@@ -25,7 +25,7 @@ describe('RecentlyListenedCard', () => {
 
   it('should render album title and artist', async () => {
     const view = await render(
-      <RecentlyListenedCard {...RECENTLY_LISTENED_CARD_PROPS_MOCK} />,
+      <RecentlyListenedCard {...RECENTLY_LISTENED_CARD_PROPS_MOCK} />
     );
 
     expect(view.getByText('AN.ALBUM.TITLE')).toBeTruthy();
@@ -34,7 +34,7 @@ describe('RecentlyListenedCard', () => {
 
   it('should render relative time since last listened', async () => {
     const view = await render(
-      <RecentlyListenedCard {...RECENTLY_LISTENED_CARD_PROPS_MOCK} />,
+      <RecentlyListenedCard {...RECENTLY_LISTENED_CARD_PROPS_MOCK} />
     );
 
     expect(view.getByText('5 hours ago')).toBeTruthy();
@@ -42,7 +42,7 @@ describe('RecentlyListenedCard', () => {
 
   it('should fire onClick when pressed', async () => {
     const view = await render(
-      <RecentlyListenedCard {...RECENTLY_LISTENED_CARD_PROPS_MOCK} />,
+      <RecentlyListenedCard {...RECENTLY_LISTENED_CARD_PROPS_MOCK} />
     );
 
     fireEvent.press(view.getByRole('button'));
