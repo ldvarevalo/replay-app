@@ -46,7 +46,7 @@ const RedirectGate = ({ children }: { children: ReactNode }) => {
     return <Redirect href="/login" />;
   }
   if (user && pathname.startsWith('/login')) {
-    return <Redirect href="/inicio" />;
+    return <Redirect href="/home" />;
   }
   return <>{children}</>;
 };
