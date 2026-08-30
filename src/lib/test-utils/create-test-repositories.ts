@@ -13,7 +13,7 @@ import type { Repositories, LookupResult } from '@/repositories/types';
  * Types
  */
 
-type RepositoryOverrides = {
+export type RepositoryOverrides = {
   [K in keyof Repositories]?: Partial<Repositories[K]>;
 };
 

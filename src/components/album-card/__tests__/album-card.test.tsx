@@ -22,7 +22,9 @@ describe('AlbumCard', () => {
   afterEach(() => jest.clearAllMocks());
 
   it('should render title and artist', async () => {
-    const { getByText } = await render(<AlbumCard {...ALBUM_CARD_PROPS_MOCK} />);
+    const { getByText } = await render(
+      <AlbumCard {...ALBUM_CARD_PROPS_MOCK} />
+    );
     expect(getByText('A Love Supreme')).toBeTruthy();
     expect(getByText('John Coltrane')).toBeTruthy();
   });
@@ -35,18 +37,24 @@ describe('AlbumCard', () => {
   });
 
   it('should not render year when not provided', async () => {
-    const { queryByText } = await render(<AlbumCard {...ALBUM_CARD_PROPS_MOCK} />);
+    const { queryByText } = await render(
+      <AlbumCard {...ALBUM_CARD_PROPS_MOCK} />
+    );
     expect(queryByText('1965')).toBeNull();
   });
 
   it('should call onClick when pressed', async () => {
-    const { getByText } = await render(<AlbumCard {...ALBUM_CARD_PROPS_MOCK} />);
+    const { getByText } = await render(
+      <AlbumCard {...ALBUM_CARD_PROPS_MOCK} />
+    );
     fireEvent.press(getByText('A Love Supreme'));
     expect(handleClickMock).toHaveBeenCalledTimes(1);
   });
 
   it('should expose button role and title-by-artist label for a11y', async () => {
-    const { getByRole } = await render(<AlbumCard {...ALBUM_CARD_PROPS_MOCK} />);
+    const { getByRole } = await render(
+      <AlbumCard {...ALBUM_CARD_PROPS_MOCK} />
+    );
     const pressable = getByRole('button');
     expect(pressable.props.accessibilityLabel).toBe(
       'A Love Supreme by John Coltrane'

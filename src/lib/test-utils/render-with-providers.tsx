@@ -1,31 +1,37 @@
-import type { ReactElement } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { ReactElement, ReactNode } from 'react';
+import { QueryClientProvider, type QueryClient } from '@tanstack/react-query';
 import {
+  fireEvent,
   render as renderNative,
+  renderHook as renderHookNative,
+  waitFor,
+  type RenderHookOptions as RNTLRenderHookOptions,
+  type RenderHookResult,
   type RenderOptions,
   type RenderResult,
 } from '@testing-library/react-native';
 import { AuthProvider, type AuthAdapter } from '@/core/auth';
 import { createTestQueryClient } from '@/lib/react-query/query-client';
 import { setRepositories } from '@/repositories/instance';
-import type { Repositories } from '@/repositories/types';
-import { createTestRepositories } from './create-test-repositories';
+import {
+  createTestRepositories,
+  type RepositoryOverrides,
+} from './create-test-repositories';
 
 /**
  * Types
  */
 
-type RepositoryOverrides = {
-  [K in keyof Repositories]?: Partial<Repositories[K]>;
-};
-
-interface Options extends Omit<RenderOptions, 'wrapper'> {
+export interface RenderHookOptions extends Omit<
+  RNTLRenderHookOptions<unknown>,
+  'wrapper'
+> {
+  queryClient?: QueryClient;
   repositories?: RepositoryOverrides;
   adapter?: Partial<AuthAdapter>;
-  queryClient?: QueryClient;
 }
 
-interface RenderResultWithProviders extends RenderResult {
+export interface RenderResultWithProviders extends RenderResult {
   adapter: AuthAdapter;
 }
 
@@ -58,7 +64,11 @@ const mergeAdapter = (
 
 export const render = async (
   ui: ReactElement,
-  options: Options = {}
+  options: RenderOptions & {
+    repositories?: RepositoryOverrides;
+    adapter?: Partial<AuthAdapter>;
+    queryClient?: QueryClient;
+  } = {}
 ): Promise<RenderResultWithProviders> => {
   const { repositories, adapter, queryClient, ...rest } = options;
   const client = queryClient ?? createTestQueryClient();
@@ -75,3 +85,33 @@ export const render = async (
   const result = await renderNative(wrapped, rest);
   return Object.assign(result, { adapter: resolvedAdapter });
 };
+
+/**
+ * renderHook
+ */
+
+export const renderHook = <T,>(
+  hook: () => T,
+  options: RenderHookOptions = {}
+): Promise<RenderHookResult<T, unknown>> => {
+  const { queryClient, repositories, adapter, ...rest } = options;
+  const client = queryClient ?? createTestQueryClient();
+  setRepositories(createTestRepositories(repositories));
+
+  const resolvedAdapter = mergeAdapter(createDefaultAuthAdapter(), adapter);
+
+  const Wrapper = ({ children }: { children: ReactNode }) => (
+    <QueryClientProvider client={client}>
+      <AuthProvider adapter={resolvedAdapter}>{children}</AuthProvider>
+    </QueryClientProvider>
+  );
+  Wrapper.displayName = 'TestProvidersWrapper';
+
+  return renderHookNative(hook, { wrapper: Wrapper, ...rest });
+};
+
+/**
+ * Re-exports
+ */
+
+export { waitFor, fireEvent };

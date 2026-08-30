@@ -8,21 +8,21 @@ import { BottomNav, type TabId } from '@/components/ui/bottom-nav';
  * Types
  */
 
-type TabPath = '/inicio' | '/collection' | '/release/add' | '/analytics';
+type TabPath = '/home' | '/collection' | '/release/add' | '/analytics';
 
 /**
  * Constants
  */
 
 const TAB_TO_PATH: Record<TabId, TabPath> = {
-  home: '/inicio',
+  home: '/home',
   collection: '/collection',
   add: '/release/add',
   analytics: '/analytics',
 };
 
 const PATH_TO_TAB: Record<TabPath, TabId> = {
-  '/inicio': 'home',
+  '/home': 'home',
   '/collection': 'collection',
   '/release/add': 'add',
   '/analytics': 'analytics',
@@ -46,7 +46,7 @@ export default function AppLayout() {
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
       <View style={styles.content}>
         <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="inicio" />
+          <Stack.Screen name="home" />
           <Stack.Screen name="collection" />
           <Stack.Screen name="release/add" />
           <Stack.Screen name="analytics" />
