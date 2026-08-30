@@ -20,9 +20,7 @@ export interface RecentlyListenedCardProps {
  * Constants
  */
 
-const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-
-const INTERVALS: readonly (readonly [number, Intl.RelativeTimeFormatUnit])[] = [
+const INTERVALS: readonly (readonly [number, string])[] = [
   [31_536_000, 'year'],
   [2_592_000, 'month'],
   [604_800, 'week'],
@@ -35,13 +33,33 @@ const INTERVALS: readonly (readonly [number, Intl.RelativeTimeFormatUnit])[] = [
  * Helpers
  */
 
+// ponytail: Hermes does not implement Intl.RelativeTimeFormat, so this mirrors
+// Intl.RelativeTimeFormat('en', { numeric: 'auto' }) in plain JS instead.
+const RELATIVE_SINGULARS: Readonly<Record<string, string>> = {
+  day: 'yesterday',
+  month: 'last month',
+  year: 'last year',
+};
+
 const formatRelativeTime = (isoDate: string): string => {
   const seconds = Math.floor((Date.now() - new Date(isoDate).getTime()) / 1000);
   const match = INTERVALS.find(([s]) => seconds >= s);
   const [unitSeconds, unit] = match ?? [60, 'minute'];
   const value = Math.floor(seconds / unitSeconds);
 
-  return rtf.format(-value, unit);
+  if (value <= 0) {
+    return 'this minute';
+  }
+
+  const singular = RELATIVE_SINGULARS[unit];
+  if (value === 1 && singular) {
+    return singular;
+  }
+  if (value === 1) {
+    return `1 ${unit} ago`;
+  }
+
+  return `${value} ${unit}s ago`;
 };
 
 /**

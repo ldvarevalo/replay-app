@@ -48,4 +48,21 @@ describe('RecentlyListenedCard', () => {
     fireEvent.press(view.getByRole('button'));
     expect(handleClickMock).toHaveBeenCalledTimes(1);
   });
+
+  it('should not depend on Intl.RelativeTimeFormat (Hermes lacks it)', async () => {
+    const originalRtf = (Intl as { RelativeTimeFormat?: unknown })
+      .RelativeTimeFormat;
+    (Intl as { RelativeTimeFormat?: unknown }).RelativeTimeFormat = undefined;
+
+    try {
+      const view = await render(
+        <RecentlyListenedCard {...RECENTLY_LISTENED_CARD_PROPS_MOCK} />
+      );
+
+      expect(view.getByText('5 hours ago')).toBeTruthy();
+    } finally {
+      (Intl as { RelativeTimeFormat?: unknown }).RelativeTimeFormat =
+        originalRtf;
+    }
+  });
 });
